@@ -1,0 +1,83 @@
+\chapter{The entity relationship model}
+Il modello relazioni entit\`a viene utilizzato per descrivere i dati coinvolti in un'operazione del mondo reale attraverso oggetti e le rispettive relazioni ed \`e utilizzato nella fase di database design concettuale. 
+\section{Database design e ER diagram}
+Il processo di database design pu\`o essere diviso in sei fasi, ma l'ER diagram viene utilizzato solo nelle prime tre:
+\subsubsection{Requirement analysis}
+In questa fase viene analizzato che tipo di dati vanno salvati nel database, che applicazione vada costruita al di sopra di esso e quali dati sono maggiormente soggetti a cambiamenti e pertanto influenti sulle 
+performance. \`E solitamente un processo informale in cui si discute con gli utenti e in cui viene analizzato l'ambiente, analisi di documentazione di applicazioni da modificare o cambiare. 
+\subsubsection{Conceptual database design}
+Le informazioni raccolte nella fase precedente sono utilizzate per costruire un modello di alto livello dei dati che saranno salvati nel database con i constraints conosciuti per quanto riguarda i dati. In questa fase 
+viene solitamente creato l'ER diagram in modo da crearne una semplice descrizione di come sia sviluppatori che utenti lo rappresentano. Permette sia una facile discussione con gli utenti che una 
+rappresentazione abbastanza precisa da rendere la traduzione in un modello dati comprensibile al database utilizzato.
+\subsubsection{Logical database design}
+In questa fase viene scelto un DBMS per implementare il conceptual design, pertanto l'ER schema viene tradotto in un relational schema. Il risultato \`e un logical schema nel relational model. 
+\subsubsection{Schema refinement}
+In questa fase vengono analizzate le relazioni nello schema in modo da trovare eventuali problematiche e raffinarlo. Questa fase \`e guidata dalla teoria della normalizzazione delle relazioni.
+\subsubsection{Physical database design}
+In questa fase si considerano tipiche cariche di lavoro per il database e lo si raffina in modo che raggiunga i criteri di performance.
+\subsubsection{Application and security design}
+Si deve identificare entit\`a e processi coinvolti nell'applicazione, descrivere il loro ruolo nell'applicazione e garantire che i dati siano accessibili solo a chi ne abbia il privilegio. 
+\section{Entit\`a, attributi e entity set}
+Si definisce un'entit\`a un oggetto del mondo reale distinguibile dagli altri. \`E spesso utile identificare una collezione di simili entit\`a, chiamata entity set. Questi ultimi non possono essere divisi. Un entit\`a 
+viene descritta da una serie di attributi e tutte le entit\`a nello stesso entity set hanno gli stessi attributi. La scelta degli attributi caratterizza il livello di dettaglio con cui si vuole rappresentare un entit\`a. Per ogni 
+attributo si rende necessario identificare un dominio di possibili valori. Inoltre ad ogni entity set va associata una key, un set di attributi minimale che identifica univocamente l'entit\`a. Essendo che ci potrebbe 
+essere pi\`u di una candidate key ne si designa una a primary key. Un entity set \`e rappresentato da un rettangolo mentre gli attributi da un ovale. La primary key \`e sottolineata. 
+\section{Relazioni e relationship set}
+Una relazione \`e un'associazione tra due o pi\`u entit\`a. Analogamente alle entit\`a pi\`u relazioni simili possono essere raccolte in relationship sets, che possono essere pensati come insiemi di ennuple: $
+\{(e_1,\dots, e_n)|e_1\in E_1,\dots, e_n\in E_n\}$. Ogni ennupla denota una relazione che coinvolge $n$ entit\`a da $e_1$ a $e_n$, dove $e_i$ sta nell'entity set $E_n$. Una relazione pu\`o possedere degli 
+attributi descrittivi in modo da registrare informazioni riguardanti la relazione ma non le entit\`a. Si definisce istanza di un relationship set un relationship set, ovvero come lo stato del relationship set in un 
+qualche istante. Gli entity set che partecipano in una relazione non devono essere necessariamente distinti. Una relazione pu\`o infatti coinvolgere entit\`a appartenenti allo stesso entity set. In questo caso le 
+due entit\`a svolgono diversi ruoli che deve essere identificato da due role identificator su ogni lato della relazione in modo da costituire un identificatore unico per la relazione. 
+\section{Capacit\`a addizionali dell'ER model}
+\subsection{Key constraints}
+I key constraints si riferiscono alla numerazione delle relazioni, che si possono dividere in tre categorie principali:
+\begin{itemize}
+\item Many to many: le entit\`a di entrambi gli entity set si possono relazionare in qualsiasi numero con le entit\`a dell'altro entity set.
+\item Many to one: le entit\`a di un entity set si possono relazionare con al pi\`u un'entit\`a dell'altro, mentre queste ultime in qualsiasi numero con le prime.
+\item One to one: le entit\`a di entrambi gli entity set si possono relazionare con al pi\`u un'entit\`a dell'altro entity set.
+\end{itemize}
+\subsubsection{Key constraints per relazioni ternarie}
+La convenzione sopra descritta pu\`o essere estesa a relazioni tra tre o pi\`u entit\`a: se un'entit\`a E possiede un key constraints nella relazione R ogni istanza di E appare al pi\`u una volta in ogni istanza della 
+relazione R. 
+\subsection{Participation constraints}
+Indipendenti dai key constraints indicano quando la relazione sia totale o parziale. Nel primo caso ogni istanza dell'entit\`a deve apparire nell'istanza della relazione. 
+\subsection{Weak entities}
+Non \`e sempre vero che ogni entit\`a possieda una key. In questo caso si determinano delle weak entities, ovvero entit\`a considerate unicamente in relazione con l'entit\`a con cui sono in relazione. Si 
+identificano con una combinazione tra loro attributi e la key della seconda entit\`a. Permettono di salvare dati dell'entit\`a unicamente quando \`e in relazione con un'altra chamata identifying owner. Per poter 
+essere create si necessita che la owner entity e la weak entity siano in una one to many relationship set (ogni owner con una o pi\`u weak entities, ma ogni weak entity ha un singolo owner). Questo relationship 
+set \`e detto identifiyng relationship set della weak entity. La weak entity deve avere una total partecipation con l'identifiyng relationship set. 
+\subsection{Class hierarchy}
+In alcuni casi risulta naturale classificare le entit\`a di un entity set in sottoclassi. In questo modo una sottoclasse eredita tutti gli attributi e quando richiesta la classe padre vengono restituite anche le classi figli. 
+La class hierarchy pu\`o essere considerata in due modi:
+\begin{itemize}
+\item Ogni super classe \`e specializzata in sottoclassi. La specializzazione \`e il processo di identificare un sottoinsieme di un entity set (la classe padre) che condivide delle caratteristiche. Tipicamente \`e creata 
+prima la superclasse e poi le sottoclassi con gli attributi specifici. 
+\item Le sottoclassi sono generalizzate nella superclasse. In questo modus operandi vengono identificate delle caratteristiche comuni di una collezione di classi che vengono poi raccolte in una superclasse. 
+\end{itemize}
+Si possono specificare due tipologie di constraints per le gerarchie: di overlap determina se due sottoclassi possono contenere la stessa entit\`a, di covering determina se le entit\`a della sottoclasse includono 
+tutte le entit\`a della superclasse. Esistono due motivi principali per identificare sottoclassi:
+\begin{itemize}
+\item Aggiungere attributi descrittivi che hanno senso solo per la sottoclasse.
+\item Per identificare un entity set che partecipa in una relazione.
+\end{itemize}
+\subsection{Aggregation}
+In alcuni casi si rende necessario modellare una relazione tra una collezione di entit\`a e relazioni. Per fare questo si usa l'aggregazione che ci permette di indicare che un relationship set partecipa in un altro 
+relationship set in modo che il primo sia considerato come un'identit\`a. L'uso di un aggregazione invece di una relazione ternaria va usato in caso di attributi alle relazioni o a particolari constraints sulla 
+relazione. 
+\section{Conceptual design con ER model}
+\subsection{Entit\`a o attributo}
+Durante il processo di design pu\`o non essere chiaro se un attributo debba essere considerato come un'entit\`a a s\`e stante, questo va reso necessario quando:
+\begin{itemize}
+\item Vanno salvati pi\`u attributi per entit\`a.
+\item La struttura dell'attributo \`e complessa e la si vuole catturare nel database.
+\item Un attributo rappresenta un set di valori.
+\end{itemize}
+\subsection{Entit\`a o relazione}
+Una relazione con troppi attributi porta a una perdita di efficienza di spazio, pertanto conviene trasformarla in alcuni casi in un'entit\`a.
+\subsection{Binary or ternary relationship}
+Una relazione ternaria deve essere trasformata da una serie di relazioni binarie quando un'entit\`a non pu\`o essere in relazione con pi\`u di un'altra, la stessa entit\`a deve essere sempre in relazione con l'altra, 
+\`e una weak entity. Il viceversa \`e necessario quando le due relazioni sono strettamente correlate, ovvero se avviene una deve avvenire anche l'altra e non si pu\`o rappresentare un attributo di una delle 
+relazioni con chiarezza.
+\subsection{Relazione ternaria o aggragazione}
+La scelta tra relazione ternaria o aggregazione \`e per principalmente determinata dall'esistenza di una relazione con un relationship set, ma anche da certi constraints che si vogliono imporre: come ad esempio 
+un record da salvare della relazione con l'aggregazione o quando una relazione \`e many to one.

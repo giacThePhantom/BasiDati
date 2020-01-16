@@ -1,0 +1,106 @@
+\chapter{Il modello relazionale}
+Il modello relazionale consirea il database come una collezione di una o pi\`u relazioni dove ogni relazione \`e una tabella. Una relazione consiste di uno relation schema e un relation instance: l'istanza \`e una 
+tabella e lo schema descrive le teste di colonna per le tabelle. Lo schema specifica il nome della relazione, il nome di ogni campo o colonna o attributo e il dominio di ogni campo. Un dominio \`e riferito dal suo 
+nome e possiede un iniseme di valori associati. Uno schema di una relazione \`e nella forma $<Table name>(att_1:\ dom_1, \dots, att_n:\ dom_n)$. Un istanza di una relazion \`e un insieme di tuple dette records 
+in cui ogni tupla ha lo stesso numero di campi dello schema relazionale.  L'istanza pu\`o essere pensata come la tabella in cui ogni tupla \`e una riga e tutte le righe hanno lo stesso numero di campi. Ogni 
+relazione \`e definita da un insieme di tuple uniche, ovvero tutte diverse. I campi sono convenzionalmente numerati. Uno schema relazionale specifica il dominio di ogni attributo nell'istanza. Questi constraint di 
+dominio specificano che i valori che appaiono nella colonna devono essere presi da quelli di tale dominio. Considerando lo schema superiore $\{<att_1:\ d_1, \dots, att_n:\ d_n>\|d_1\in Dom_1, \dots, d_n\in 
+Dom_n\}$. Le istanze di relazioni sono instanze che soddisfano i constraints di dominio nel relational schema. Il grado o arity di una relazione \`e il numero di campi, mentre la sua caridnalit\`a \`e il numero di 
+tuple in un'istanza. Un database relazionale \`e un insieme di relazioni di nome diverso. Un relational database schema \`e una collezione di schemi per le relazioni del database. Si dice istanza di un database 
+relazionale una collezione di istanze di relazioni.
+\section{Creare e modificare relazioni utilizzando SQL}
+il linguaggio SQL utilizza la parola table per denotare relazioni. Il sottoinsieme di SQL per la creazione, eliminazione e modifica di tabelle \`e detto DDL. Per creare nuove tabelle si utilizza il comando 
+\emph{CREATE TABLE $<$nome tabella$>$($att_1$  $dom_1$, $\dots$, $att_n$  $dom_n$)}. Le tuple sono inserite attraverso il comando \emph{INSERT INTO $<$caratterizzazione tabella$>$ VALUES 
+$<$tupla$>$} su pu\`o omettere la lista dei campi in INTO, ma \`e buona pratica includerla in modo da chiarire univocamente l'ordine. Si possono eliminare tuple attraverso il comando \emph{DELETE FROM 
+$<$caratterizzazione tabella$>$ WHERE $<$caratteristica delle tuple da eliminare$>$}. Si possono modificare i valori di una tupla esistente attraverso il comando \emph{UPDATE  $<$caratterizzazione 
+tabella$>$ SET $<$elementi da modificare$>$ WHERE $<$caratteristica delle tuple da eliminare$>$}. La clausola WHERE \`e applicata prima di SET e se il valore della colonna \`e utilizzato per modificarlo 
+nella parte destra dell'uguaglianza viene utilizzato il valore vecchio. 
+\section{Integrity constraints sulle relazioni}
+In integrity constaint \`e una condizione specificata su uno schema di database che restringe i dati che possono essere salvati su un'istanza del database. Se tale istanza li soddisfa tutti \`e detta legale. Un DBMS 
+forza gli integrity constraints nel senso che permette di salvare nel database solo istanze legali. Gli integrity constraints sono specificati e forzati a tempi diversi: sono specificati durante la definizione dello 
+schema, mentre quando un applicazione di database gira il DBMS controlla le violazioni e vieta cambi ai dati che violerebbero gli IC. In alcuni casi potrebbe compensare i cambiamenti ai dati in modo che si 
+evitano violazioni. Un esempio di IC sono i domain constraints.
+\subsection{Key constraints}
+Un key constraint \`e una proposizione secondo cui un sottoinsieme minimo di campi di una relazione \`e un identificatore unico per la relazione. Questo insieme \`e detto candidate key per la relazione. Una 
+candidate key pertanto determina che due tuple distinte in un'istanza legale non possono avere valori identici in tutti i campi della chiave e nessun sottoinsieme dell'insieme che forma la candidate key \`e un 
+identificatore unico per la chiave. Un insieme che contenga oltre alla chiave ulteriori campi \`e detto superkey. Ogni relazione \`e garantita di avere una chiave e se non diversamente specificato tutti i campi la 
+formano. Una relazione pu\`o avere diverse candidate key e di tutte queste si pu\`o identificare una primary key e intuituvamente una tupla pu\`o essere riferita da ogni parte del database salvando i valori dei 
+campi della sua primary key. 
+\subsubsection{Specificare key constraints in SQL}
+In SQL per dichiarare che un sottoinsieme costituisce una chiave usando l'UNIQUE constraint. Al pi\`u una di queste candidate keys pu\`o essere dichiarata come primary key attravero PRIMARY KEY constraint. 
+\emph{CREATE TABLE $<$nome tabella$>$($att_1$  $dom_1$, $\dots$, $att_n$  $dom_n$, UNIQUE($<$candidate key$>$), CONSTRAINT $<$nome constraints$>$ PRIMARY KEY($<$attributi$>$))}. 
+CONSTRAINT permette di nominare un constraint in modo che quando venga violato venga ritornato il nome cos\`i specificato.
+\subsection{Foreign key constraints}
+Pu\`o capitare che l'informazione salvata in una relazione sia collegata a informazioni legate in altre relazioni. Se una delle relazioni \`e modificata, l'altra deve essere controllata e cambiata per mantenere i dati 
+consistenti. Un IC che riguarda entrambe le relazioni deve essere specificata in modo per permettere questi controlli. In questo caso si rende necessario un foreign key constraint. Un foreign key constraints
+\`e un campo di una relazione che si riferisce ad un'altra tabella e deve essere identica per numero di campi e tipi ad essa. Una foreign key si pu\`o riferire alla stessa relazione. Si introduce il valore \textbf{null}
+di un campo che vuol dire che il valore nel campo \`e sconosciuto o non applicabile. Sono possibili nelle foreign key ma non nelle primary key. 
+\subsubsection{Specificare foreign key constraints in SQL}
+\emph{CREATE TABLE $<$nome tabella$>$($att_1$  $dom_1$, $\dots$, $att_n$  $dom_n$, FOREIGN KEY ($<$nome campi$>$) REFERENCES $<$nome tabella$>$)} che obbliga ai campi della foreign
+key di apparire uguali nella tabella referenziata. 
+\section{Constraints generali}
+Si pu\`o aumentare la granularit\`a dei constraints attraverso table constraints e assertions: le prime sono associate con una tabella e controllate quando \`e modificate, le assertions agiscono su pi\`u tabelle. 
+\section{Forzare integrity constraints}
+Se i constraints su primary key e UNIQUE sono di facile soluzione, SQL crea diverse soluzioni per gestire la violazione dei foreign key constraints: 
+\begin{itemize}
+\item Se \`e inserita una riga con una foreign key che non esiste nella tabella referenziata l'INSERT viene respinto.
+\item Se una riga della tabella referenziata \`e eliminata o aggiornata si pu\`o:
+\begin{itemize}
+\item Eliminare tutte le righe della tabella che la referenzia con lo stesso valore. \emph{CASCADE}.
+\item Non permettere l'eliminazione se una riga la referenzia. \emph{NO ACTION}.
+\item Settare ogni valore che si riferiva a tale riga ad un valore di default. \emph{SET DEFAULT}, dove il valore di default \`e specificato nella definizione del campo.
+\item Se non \`e parte della primary key della tabella referenziata si pu\`o settare a \emph{null}. \emph{SET NULL}
+\end{itemize}
+\end{itemize}
+SQL permette in caso di eliminazione o aggiornamento di scegliere una delle quattro opzioni specificandole come parte della dichiarazione della foreign key attraverso le parole chiave scritte sopra precedute da
+\emph{ON DELETE} o \emph{ON UPDATE}. 
+\subsection{Transazioni e constraints}
+Di default i constraints sono controllati alla fine di ogni SQL statement che potrebbe generare una violazione. Questo controllo pu\`o essere troppo rigido e pertanto si possono separare i constraints in 
+\emph{DEFERRED} o \emph{IMMEDIATE}: il primo tipo viene controllato al tempo di commit.
+\section{Querying dati relazionali}
+Una relational database query \`e una domanda riguardante i dati e la risposta \`e una nuova relazione che li contiene. SQL \`e il linguaggio di query pi\`u utilizzato. Si possono visualizzare i dati attraverso il 
+comando \emph{SELECT $<$nome campi $*$ per tutti$>$ FROM $<$nome tabella$>$ WHERE $<$condizioni su tabella$>$}. Si possono combinare informazioni presenti su tabelle diverse. 
+\section{Trasformazioni da ER a relational}
+Il modello ER \`e un modo conveniente per rappresentare un design di database di alto livello che poi viene tradotto nello schema relazionale per poi essere implementato.
+\subsection{Da entity sets a tables}
+Un entity set \`e mappato in una relazione in modo che ogni attributo di esso divento un attributo della tabella. 
+\subsection{Da relationship sets senza constraints a tables}
+Un relationship set \`e mappato a una relazione. Si consideri un relationship set senza chiave e constraints di partecipazione. Per rappresentarlo si deve essere capaci di identificare ogni entit\`a partecipante
+e dare valori agli attributi descrittivi, pertanto gli attributi di una relazione contengono: 
+\begin{itemize}
+\item Gli attributi primary key di ogni entity set partecipante come foreign key.
+\item Gli attributi descrittivi dell relationship set.
+\end{itemize}
+Gli attributi non descrittivi formano una superkey.
+\subsection{Da relationship sets con key constraints a tables}
+Se un relationship set coinvolge $n$ entity set e qualche $m$ di essi sono collegati attraverso frecce la chiave di ciascuno di essi costituisce una chiave per la relazione dove il relationship set \`e mappato. Un 
+ulteriore metodo \`e rappresentato da includere informazioni della relazione nelle tavole corrispondenti agli entity set con la freccia, in particolare se un relationship set coinvolge $n$ entity set e qualcuno di 
+essi\`e linkato attraverso una freccia la relazione corrispondente a ognuno di questi set pu\`o essere aumentato includendo la foreign key delle altre e gli attributi della relazione. Queste foreign key possono 
+avere null value e pertanto dello spazio pu\`o essere sprecato, risparmiando sulla difficolt\`a delle queries. 
+\subsection{Da relationship set con partecipation constraints a tables}
+Questo viene implementato attraverso le assertions: si deve garantire che una foreign key appaia con non null values. 
+\subsection{Da weak entities a tables}
+Un weak entity set partecipa sempre in una relaizone one-to-many relazione binaria e possiede un key constraint e total partetipation. Vengono pertanto tradotte utilizzando una foreign key della entity da cui
+si riferiscono. Si deve comunque prendere in considerazione che possiede solo una chiave parziale e che quando un'entit\`a padrona viene eliminata deve essere eliminata anche la weak entity. La primary
+key \`e pertanto una combinazione della foreign kay e un altro attributo e l'eliminazione deve avvenire \emph{ON DELETE CASCADE}.
+\subsection{Tradurre gerarchie di classi}
+Esistono due approcci per generare gerarchie di classi: 
+\begin{itemize}
+\item Mappare ogni elemento della classe padre nella classe figlio attraverso la foreign key della superclasse che svolge il ruolo di chiave primaria e per referenziare tutti gli attributi del padre. Un eliminazione
+del padre deve essere fatto a cascata sul figlio.
+\item Creare una relazione che possiede i propri attributi e tutti gli attributi della classe padre.
+\end{itemize}
+Il primo approccio \`e generalmente applicabile. Il secondo unicamente se la superclasse non contenga elementi che non siano presenti nelle classi figlie in quanto non esiste.
+\subsection{Tradurre aggregazioni}
+Quando si vuole fare una relazione con un'aggregazione si crea una relazione con la chiave dell'altro elemento, la chiave della relazione dell'aggregazione e gli attributi descrittivi. Se la relazione centrale 
+dell'aggregazione non possiede attributi pu\`o essere ottenuta attraverso la coppia delle chiavi degli entity set nell'aggregazione come foreign key. 
+\section{Viste}
+Si dice vista una tabella le cui righe non sono salvate esplicitamente nel database ma sono computate quando rese necessarie da una view definition. Si creano come \emph{CREATE VIEW} con un select.
+Possono essere utilizzate come una tabella base. Quando vengono utilizzate la view definition viene prima computata e poi portata come valore d'ingresso.
+\subsection{Data indipendence, security}
+Il meccanismo delle viste permette il supporto per la data indipendece logica nel relational model: pu\`o essere utilizzato per definire relazioni che mascherano cambi nello schema concettuale. Inoltre 
+permettono di definire viste che danno a gruppi di utenti solo le informazioni che hanno il privilegio di vedere. 
+\subsection{Aggiornamenti su viste}
+Si permettono di aggiornare viste solo che sono definite su una singola tabella base. La vista \`e chiamata updatable view. 
+\section{Eliminare e alterare tabelle e viste}
+Tabelle e fiste possono essere rimosse attraverso \emph{DROP TABLE} o alterate attraverso \emph{ALTER TABLE}.

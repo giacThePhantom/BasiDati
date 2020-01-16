@@ -1,0 +1,44 @@
+\chapter{Relational Algebra}
+Un linguaggio di query permette di recuperare dati da un database. Il modello relazionale supporta linguaggi semplici ma potenti con forti fondamenti formali
+basati sulla logica che permettono molte ottimizzazioni. Questi linguaggi non sono Touring completi e non sono utilizzati per calcoli complessi, ma 
+gestiscono in maniera ottima accessi a grandi gruppi di dati. Due linguaggi di query matematici sono alla base delle implementazioni: la relational algebra
+pi\`u operazionale, utile per rappresentare piani di esecuzione e il relational calculus che permette agli utenti di descrivere cosa vogliono e non come
+computarlo e non \`e operazionale ma dichiarativo. Una query \`e applicata alle istanze delle relazioni. Gli schema delle relazioni di input e di risultato 
+sono fissati, determinati dalla definizione dei costrutti del linguaggio di query. La notazione dei campi di una tabella pu\`o essere posizionale in modo 
+da facilitare la formalizzazione o nominativa in modo da facilitare la lettura. 
+\section{Operazioni}
+\begin{itemize}
+\item Selezione $\sigma$ seleziona un sottoinsieme di righe di una relazione.
+\item Proiezione $\pi$ elimina colonne non volute dalla tabella.
+\item Prodotto cartesiano $\times$ permette di combinare due relazioni.
+\item Differenza di insiemi $-$ le tuple nella relazione $1$ ma non nella relazione $2$.
+\item Unione $\cup$, tuple nella relazione $1$ e nella relazione $2$.
+\end{itemize}
+Essendo che ogni operazione ritorna una relazione possono essere composte. Questo dice che l'algebra \`e chiusa. 
+\subsection{Proiezione}
+Elimina tutti gli attributi che non esistono nella lista di proiezione, lo schema risultato \`e una tabella che contiene esattamente gli attributi elencati
+con gli stessi nomi della tabela in input. Questa operazione deve eliminare i duplicati, cosa che non succede nei sistemi reali a meno che non venga 
+specificato. 
+\subsection{Selezione}
+La selezione seleziona le righe che soddisfano la condizione di selezione. Non ci sono duplicati nel risultato e lo schema rimane identico allo schema della
+tabella di input. 
+\subsection{Unione, intersezione e differenza}
+Queste operazioni prendono come input due tabelle compatibili rispetto all'untione: stesso numero di campi e campi corrispondenti dello stesso tipo. Lo 
+schema di risultato \`e quello analogo alle due tabelle.
+\subsection{Prodotto cartesiano}
+Ogni riga della prima tabella \`e accoppiata con una della seconda, lo schema risultato ha tutti i campi delle tabelle con i nomi ereditati se possibile, 
+altrimenti si rende necessaria un'operazione di rinominazione: $\rho(C(i\rightarrow name_1,\dots,  j\rightarrow name_n), R_1\times R_2)$.
+\subsection{Joins}
+\subsubsection{Condition join}
+$R_1\bowtie_C R_2=\sigma_C(R_1\times R_2)$, lo schema di risultato \`e lo stesso del prodotto cartesiano ma contiene meno tuple. A volte chiamato theta-join.
+\subsubsection{Equi-join}
+Un caso speciale del conition join dove la condizione contiene solo uguaglianze. 
+\subsubsection{Natural join}
+Un equi-join su tutti i campi in comune. 
+\subsection{Divisione}
+Non supportata come operazione primitiva ma utile. Si definisce come $A/B=\{\langle x\rangle|\exists\langle x, y\rangle\in A \forall y\in B\}$, ovvero se 
+l'insieme di $y$ valori associati con un valore $x$ in A contiene tutte i valori $y$ in $B$ allora $x\in A/B$. In generale $x$ e $y$ possono essere qualsiasi
+lista di campi e $y$ \`e la lista di campi in $B$ e $x\cup y$ \`e la lista di campi in $A$. 
+\subsubsection{Implementare una divisione}
+Si computino tutte le tuple che non sono squalificate da qualche valore $y$ in $B$. Un valore $x$ \`e squalificato se unendoci un valore $y$ da $B$ si 
+ottiene una tupla che non sta in $A$. Questi valori si ottengono attraverso $\pi_x((\pi_x(A)\times B)-A)$ e $A/B:\pi_x(A)-$ tuple squalificate.  

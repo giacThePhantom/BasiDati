@@ -1,0 +1,60 @@
+\chapter{Introduzione}
+Un database \`e una collezione di dati contenente entit\`a e relazioni riguardanti un'applicazione. Un database management system o DBMS \`e un software utilizzato per assistere nel mantenimento e utilizzo 
+di larghe collezioni di dati.
+\section{Gestire dati}
+Esistono varie tipologie di DBMS ma ci si concentrer\`a sui relational database systems o RDBMSs che sono quelli pi\`u utilizzati.
+\section{File systems e DBMS}
+Il salvataggio di dati in un file system porta a problematiche di memoria in quanto la dimensione delle memorie principali \`e limitata, non \`e possibile indirizzare tutti i files. Si rende necessario scrivere 
+programmi specifici per estrarre i dati dai files, proteggere i dati da cambi concorrenti che potrebbero creare inconsistenze. Si devono scrivere applicazioni ad-hoc in modo che dati possano essere ripristinati ad 
+uno stato consistente se il sistema fallisce e creare un sistema per implementare politiche di sicurezza come l'user control. Un DBMS viene creato con lo scopo di ovviare a questi problemi.
+\subsection{Vantaggi di un DBMS}
+\begin{itemize}
+\item Data indipendence: i programmi applicativi non sono dipendenti da dettagli della rappresentazione e salvataggio dei dati, pertanto il DBMS fornisce un'astrazione che li nasconde.
+\item Efficient data access: un DBMS utilizza molte tecniche sofisticate per salvare e recuperare dati efficientemente.
+\item Data integrity and security: se viene fatto l'accesso ai dati attraverso un DBMS questo pu\`o forzare constraints di integrit\`a e un access control che stabilisce che dati sono visibili a quali utenti.
+\item Data administration: facilita il processo di gestione dei dati affidandolo a utenti esperti.
+\item Concurrent access and crash recovery: un DBMS organizza gli accessi concorrenti ai dati in modo che un utente pu\`o considerare i dati come se fosse fatto l'accesso ad essi da un utente alla volta. Inoltre 
+protegge gli utenti dagli effetti del fallimento del sistema.
+\item Reduced application development time: fornendo importanti funzioni comuni a varie applicazioni unitamente all'interfaccia di alto livello permette la creazione pi\`u veloce e robusta di applicazioni.
+\end{itemize}
+Esistono ragioni per non utilizzare un DBMS: nel caso di applicazioni specifiche con constraints realtime o con poche ben definite operazioni critiche o nel caso un'applicazione debba gestire dati in modo non 
+supportato dal linguaggio di query. 
+\section{Descrivere e salvare dati in un DBMS}
+Un data model \`e una collezione di descrizioni di dati di alto livello che nasconde molti dettagli. Un DBMS permette di descrivere i dati da salvare utilizzando tale modello. Il modello pi\`u utilizzato \`e il 
+relational data model. Un'ulteriore astrazione rispetto al data model \`e il semantic data model ma un DBMS non \`e costruito introno a quello. Un esempio di semantic data model \`e l'entity reationship (ER) 
+model. 
+\subsection{Livelli di astrazione}
+La descrizione di un database \`e creata da uno schema per ognuno dei tre livelli di astrazione: conceptual, physical e external. Un data definition language DLL \`e utilizzato per definire gli schemi esterni e 
+concettuali come SQL. Le informazioni riguardanti gli schema sono salvati nei system catalogs.
+\subsubsection{Conceptual schema}
+Il conceptual schema o schema logico descrive i dati salvati nei termini del data model. 
+\subsubsection{Physical schema}
+Il physical schema specifica dettagli di salvataggio, ovvero riassume come il data model utilizzato \`e fisicamente salvato nella memoria. 
+\subsubsection{External schema}
+Gli external schema, solitamente espressi nel data model permettono di autorizzare e personalizzare gli accessi ai dati, pu\`o esistere un'external schema per ogni gruppo di utenti e consiste in una o pi\`u viste e 
+relazioni dal conceptual schema. Le viste sono relazioni create a partire da specifiche degli utenti finali. 
+\subsection{Data indipendence}
+Si intende con data indipendence il fatto che i programmi applicativi sono isolati dai cambi nel modo in cui i dati sono strutturati e salvati, \`e creata dal conceptual e external schemas.  Esistono due livelli di data 
+indipendence: logica rispetto ai cambi nelle relazioni e physical rispetto ai cambi della struttura di salvataggio dei dati su disco. 
+\section{Query}
+La facilit\`a con cui le informazioni possono essere ottenute da un database determina il suo valore. Per ricavare informazioni si utilizzano le queries, strutture create attraverso il linguaggio di query. Un 
+esempio di linguaggio di query \`e il relational calculus basato su logica matematica. Un DBMS permette di creare, modificare e richiedere data attraverso un data manipulation language o DML che insieme al 
+DDL forma il data sublanguage quando unito a un linguaggio host.
+\section{Transaction management}
+Per ordinare le richieste di vari utenti in modo da evitare inconsistenze da accessi concorrenti e proteggere gli utenti da fallimenti di sistema si devono gestire in maniera accurata le transazioni, ovvero ogni 
+esecuzione di un programma utilizzatore in un DBMS. Transazioni parziali non sono ammesse. 
+\subsection{Esecuzione concorrente di transazioni}
+Un'importante funzione del DBMS \`e organizzare gli accessi ai dati in modo che ogni utente possa ignorare il fatto che altri possano star accedendo ai dati concorrentemente. Un locking protocol \`e un insieme 
+di regole che ogni transazione deve seguire per permettere che nonostante diverse transazioni siano sovrapposte il loro risultato netto sia lo stesso che se fossero eseguite serialmente. Un lock \`e un 
+meccanismo utilizzato per controllare l'accesso agli oggetti del DBMS, ne esistono di due tipi: shared locks su un oggetto possono essere mantenuti da due differenti transazioni allo stesso tempo, mentre un 
+exclusive lock su un oggetto garantisce che nessun'altra transazione mantenga un lock sullo stesso oggetto. 
+\subsection{Transazioni incomplete e crash di sistema}
+Un DBMS deve garantire che cambi svolti da transazioni incomplete siano rimossi. Per farlo mantiene un log di tutte le scritture sul database: ogni azione di scrittura deve essere scritta su disco prima che il 
+cambio corrispondente sia effettuato. Questa propriet\`a \`e chiamata Write-ahead log o WAL. Per far questo un DBMS deve poter spostare una pagina da memoria a disco. Il tempo di recupero da crash pu\`o 
+essere ridotto forzando delle informazioni su disco periodicamente e creando un checkpoint.
+\section{Struttura di un DBMS}
+Un DBMS accetta comandi SQL generati da una variet\`a di interfacce utente, produce piani di query evaluation li esegue e ritorna la risposta.  Quando un utente presenta una query entra in gioco un query 
+optimizer che usa le informazioni riguardo a come i dati sono salvati per produrre un piano di esecuzione efficiente. Un piano di esecuzione \`e un albero di operatori relazionali. Il codice che implementa questi 
+operatori si trova sopra il livello di file e  dei metodi di accesso che supporta file che sono collezioni di pagine o collezioni di records. Gli heap files o file di pagine non ordinate e indici sono supportati. Questo 
+livello si trova sopra il buffer manager che porta pagine da disco a memoria principale in necessit\`a di risposte per richieste di lettura. Il livello pi\`u basso \`e il disk space manager. Esistono un transaction 
+manager, un lock manager e un recovery manager. 

@@ -1,0 +1,101 @@
+\chapter{Transazioni}
+In applicazioni reali le operazioni possono essere richieste in maniera concorrente e due operazioni che riguardano le stesse tuple eseguite allo stesso tempo possono portare a risultati errati. Si definiscono 
+pertanto le transazioni, un insieme di operazioni che devono essere svolte insieme. Due transazioni devono comportarsi come se fossero eseguite serialmente ma alcune loro parti possono sovrapporsi. Maggiore
+la sovrapposizione, migliori le prestazioni del sistema. Una sequenza di operazioni \`e serializzabile se \`e uguale a una esecuzione seriale delle transazioni. Un ulteriore problema nasce quando due operazioni
+devono per forza essere svolte atomicamente: se occorre un crash tra la prima e la seconda il database viene lasciato in uno stato incoerente. Pertanto si raccolgono operazioni sul database in transazioni, 
+collezioni di diverse operazioni sul database che devono essere eseguite atomicamente: o si svolgono tutte o nessuna. L'SQL di default richiede che le transazioni siano eseguite in modo serializzabile: una 
+transazione \`e eseguita nella sua interezza prima dell'altra. 
+\section{Testare serializzablit\`a}
+Sia una schedule un'esecuzione di transazioni con operazioni sovrapposte. Si determina un'invariante, una condizione che se vera prima dell'esecuzione delle transazioni deve rimanere vera anche al loro termine.
+\subsection{Testing}
+Per testare la serializzabilit\`a si devono ignorare i dettagli e testare se la schedule sar\`a serializzabile in ogni caso. Si analizzano solo la sequenza di letture e scritture. Il principio generale \`e di creare un
+algoritmo che non dia falsi positivi, falsi negativi non creano inconsistenze ma unicamente una degradazione delle prestazione. Si indichi:
+\begin{itemize}
+\item $r_T(X)$ la transazione $T$ che legge elementi dal database $X$.
+\item $w_T(X)$ la transazione $T$ che scrive elementi del database $X$.
+\item Se la transazioni sono indicizzate rispetto a $i$ si scrive $w_i(X)$ invece di $w_{T_i}(X)$.
+\item Si indica come azione un'espressione nella forma $r_i(X)$ o $w_i(X)$. 
+\item Una transazione $T_i$ \`e una sequenza di azioni indicizzate a $i$.
+\item Una schedule $S$ \`e un insieme di transizioni $T$ \`e una sequenza di azioni in cui per ogni transazione $T_i$ in $T$ le azioni di $T_i$ appaiono in $S$ nello stesso ordine in cui appaiono nella definizione
+di $T_i$.
+\item Si dice che $S$ \`e sovrapposta sulle azioni delle transazioni che la compongono.
+\end{itemize}
+\subsection{Serializzabilit\`a del conflitto}
+Data una schedule $S$ si esamino le azioni consecutive da differenti transazioni $T_i$ e $T_j$.
+\begin{itemize}
+\item $r_i(X)$ e $r_j(X)$ non sono mai in conflitto in quanto nessuna di esse cambia il valore di qualsiasi di ogni elemento del database.
+\item $r_i(X)$ e $w_j(Y)$ con $X\neq Y$ non sono in conflitto: $T_j$ scrive $Y$ prima che $T_i$ legge $X$ pertanto il valore di $X$ non \`e cambiato., inoltre la lettura di $X$ da $T_i$ non ha effetti su $T_j$.
+\item $w_i(X)$ e $r_j(Y)$, $X\neq Y$ non \`e in conflitto.
+\item $w_i(X)$ e $w_j(Y)$, $X\neq Y$ non \`e in conflitto.
+\end{itemize}
+Se due azioni non sono in conflitto si possono invertire tra di loro senza cambiare il risultato.
+\begin{itemize}
+\item Due azioni della stessa transizione $r_i(X)$ e $w_i(Y)$ sono sempre in conflitto: non si pu\`o cambiare l'ordine di azioni in una transizione singola.
+\item $w_i(X)$ e $w_j(X)$ sono in conflitto in quanto il valore di $X$ \`e quello computato da $T_j$, invertendo l'ordine si lascia $X$ con il valore computato da $T_i$.
+\item $r_i(X)$ e $w_j(X)$ sono in conflitto, invertendo l'ordine il valore di $X$ letto da $T_i$ sar\`a quello scritto da $T_j$ che potrebbe essere differente dal valore precedente di $X$.
+\item $w_i(X)$ e $r_j(X)$ sono in conflitto per ragioni simili.
+\end{itemize}
+Si nota come due azioni da transazioni diverse possono essere invertite a meno che involvono lo stesso elemento del database e almeno una \`e una scrittura. Data una schedule si fa il massimo numero possibile
+di inversioni necessarie con lo scopo di trasformare una schedule in una seriale. Se si pu\`o fare la schedule originale \`e serializzabile. Due schedules sono conflict-equivalent se ognuna di esse pu\`o essere
+trasformata nell'altra attraverso una sequenza di inversioni senza conflitto di azioni adiacenti. Una schedule si dice conflict-serializable se \`e conflict-equivalent a una schedule seriale. Conflict-serializability 
+implica serializzabilit\`a. L'inverso \`e falso ma conflict-serializability \`e solitamente sufficiente. 
+\subsection{Testare conflict-serializability}
+Data una schedule $S$ che coinvolge due transazioni $T_1$ e $T_2$ $T_1$ ha precedenza su $T_2$ ($T_1<_S T_2$) se ci sono azioni $A_1$ di $T_1$ e $A_2$ di $T_2$ tali che:
+\begin{itemize}
+\item $A_1$ si trova prima di $A_2$ in $S$.
+\item Sia $A_1$ che $A_2$ coinvolgono lo stesso elemento del database.
+\item Almeno una di $A_1$ e $A_2$ \`e un'azione di scrittura.
+\end{itemize}
+Si noti come queste sono esattamente le condizioni per cui non si pu\`o invertire l'ordine di $A_1$ e $A_2$, pertanto $A_1$ appare prima di $A_2$ in ogni schedule che \`e conflict-equivalent ad $S$, pertanto 
+ogni schedule seriale conflict-equivalent deve avere $T_1$ prima di $T_2$. 
+\subsubsection{Grafo delle precedenze}
+Si dice grafo delle precedenze un grafo i cui nodi sono le transazioni di $S$ e un arco $(T_i, T_j)\in E$ se e solo se $T_i<_S T_j$. 
+\subsubsection{Algoritmo}
+Si costruisca il grafo delle precedenze, si provi se possiede cicli, se li possiede $S$ non \`e serializzabile, altrimenti qualsiasi ordine topologico dei nodi \`e un ordine seriale conflict-equivalent.
+\subsubsection{Correttezza}
+Si dimostri che se esiste un ciclo la schedule non \`e serializzabile: si supponga che esiste un ciclo di lunghezza $n$, allora le azioni di una transazione devono precedere quelle della transazione stessa e si
+raggiunge pertanto una contraddizione. Si dimostra ora che se la schedule \`e serializzabile allora non esiste un ciclo: si provi per induzione sul numero di transizioni: se il grafo $n$ non ha cicli si possono 
+riordinare le schedules actions utilizzando inversioni legali in modo che la schedule diventi seriale. Se $n=1$ la schedule deve essere seriale. Si assuma la tesi vera per tutti i valori minori di $n$ e lo si provi per 
+$n$. La schedule consiste di azioni di transazioni $T_1, \dots, T_n$ con un grafo aciclico $S$, se il grafo \`e aciclico si deve avere un nodo $i$ senza archi in entrata, ovvero nessun nodo lo precede 
+nell'ordinamento pertanto non ci sono altre azioni che coinvolgono una transazione $T_j$ tali che precedono delle azioni di $T_i$ e sono in conflitto con tali azioni. Si possono muovere tutte le azioni di $T_i$ 
+all'inizio della schedule. 
+\section{Aspetti pratici}
+Non si pu\`o utilizzare l'algoritmo in quanto si dovrebbe aspettare che tutte le transazioni siano finite e si necessiterebbe di mantenere i dati per ogni transazione. L'algoritmo inoltre \`e inefficiente. Algoritmi
+come timestamps permettono di controllare ogni transazione quando finisce e mantengono informazioni limitate su ogni transazione. Quando si scopre un problema si deve cancellare la transazione e disfare
+ogni cambio fatto al database e portare questo cambio verso tutte le transazioni che nel frattempo hanno modificato il database. Questo funziona solo se questo tipo di problemi sono non frequenti, altrimenti
+si fa in modo che le transazioni possono procedere unicamente se \`e possibile garantire la serializzabilit\`a. 
+\section{Locks}
+I locks sono mantenuti su elementi del database per fermare comportamento non serializzabile. Intuitivamente una transazione ottiene locks sull'elemento del database lo accede per impedire ad altre 
+transazioni da accedere ad esso allo stesso tempo. Questi garantisce la serializzabilit\`a. 
+\subsection{Oggetti}
+L'algoritmo accede oggetti che sono relazioni, tuple, parti di relazione, disk blocks. Pi\`u piccolo l'oggetto un maggior numero di essi possono essere eseguiti in parallelo ma tenere contro di cosa viene lockato
+pu\`o essere proibitivo. Si assume che gli oggetti siano tuple. Esiste uno scheduler che locka le tabelle. Tale scheduler prende richieste dalle transazioni e permette a loro di essere eseguite o le blocca fino a che
+\`e sicuro. Idealmente lo scheduler inoltra una richiesta ogniqualvolta la sua esecuzione non pu\`o portare a uno stato inconsistente nel database. Un locking scheduler dovrebbe garantire conflict-serializability.
+Le transazioni devono richiedere e rilasciare locks oltre che leggere e scrivere oggetti del database. Si devono soddisfare le propriet\`a di consistenza delle transazioni: una transazione pu\`o leggere o scrivere 
+un elemento solo se precedentemente le \`e stato garantito un lock su quell'elemento e non \`e stato ancora rilasciato, se una transazione locka un elemento deve in un secondo momento rilasciarlo. La 
+legalit\`a delle schedules: i locks devono avere il loro significato inteso: un lock dello stesso elemento pu\`o essere posseduto unicamente da una transazione. 
+\subsubsection{Notazione}
+\begin{itemize}
+\item Sia $l_i(X)$: $T_i$ richiede un lock su un elemento $X$ del database. 
+\item Si nota che \`e compito dello scheduler decidere se assecondare la richiesta o no.
+\item $u_i(X)$: $T_i$ rilascia il suo lock su $X$. 
+\item Consistenza: ogniqualvolta $T$ contiene un'azione $r_i(X)$ o $w_i(X)$ deve esserci un'azione precedente $l_i(X)$ la prima occorrenza di  $u_i(X)$ deve trovarsi dopo l'azione.
+\item Legalit\`a delle schedules: se una schedule contiene un'azione $l_i(X)$ seguita da $l_j(X)$ deve esiste un'azione $u_i(X)$ tra le due.   
+\end{itemize}
+\subsection{Locking scheduler}
+Il compito del locking scheduler \`e di garantire richieste come $l_i(A)$ se e solo se la richiesta risulta in una schedule legale. Se la richiesta non \`e garantita la transizione \`e ritardata. La transazione aspetta 
+fino a che lo scheduler garantisce la richiesta pi\`u tardi. Lo scheduler utilizza una tabella dei lock che dice per ogni elemento del database quale transazione o transizioni possiedono il lock per l'elemento.
+\subsubsection{Two-phase locking}
+Il two-phase locking (2PL): in ogni transizione tutte le azioni di lock precedono tutte le azioni di unlock in modo da garantire la serializzabilit\`a. Nella prima fase di una transazione i lock sono ottenuti, nella 
+seconda fase sono rilasciati. Una transazione che rispetta le condizioni 2PL \`e chiamata una transazione two-phase-locked. 
+\paragraph{Dimostrazione}
+Si assuma che $S$ sia legale in una schedule 2PL. Si mostra come convertire $S$ in una conflict-equivalent schedule seriale. Si provi per induzione su $n$, il numero di transazioni in $S$. Si usano le operaizoni
+di lock e unlock per la prova.
+\begin{itemize}
+\item $n=1$: $S$ \`e gi\`a una schedule seriale. 
+\item Si assuma che il risultato valga per schedules con transazioni $n-1$: sia $T_i$ la transazione con la prima azione di unlock nella schedule, $u_i(X)$. Si mostra che si possono spostare tutte le azioni di $T_i$
+all'inizio della schedule senza conflitti. Si consideri qualche azione $T_i$, $w_i(Y)$, affinch\`e possa essere preceduta in $S$ da qualche azione con conflitto come $w_j(Y)$ $j$ deve lockare l'item e $i$ deve
+successivamente lockarla. Ma per definizione $u_i(X)$ \`e la prima operazione di unlock, pertanto deve essere prima di $u_j(Y)$, ma allora $u_i(X)$ appare prima di $l_i(Y)$ contrariamente al protocollo 2PL e 
+si deve pertanto riscrivere $S$ come $T_i(T_{n-1}\cdots T_0)$.
+\end{itemize}
+Con questo algoritmo sono possibili deadlocks: tutte le transazioni stanno aspettando per la liberazione di un lock che non avverr\`a mai. 

@@ -1,0 +1,45 @@
+\chapter{SQL}
+Una query basica in SQL ha la forma: \emph{SELECT [DISTINCT] target-list FROM relation-list WHERE qualification}, dove relation-list \`e una lista di nomi
+di relazioni, possibilmente seguiti da una range-variable dopo ogni nome. La target-list \`e la lista di attributi delle relazioni in relation-list e 
+qualification una comparazione tra attributi o tra attributo e costante con gli operatori $<$, $>$, $\le$, $\ge$, $=$, $\neq$. DISTINCT \`e una parola chiave
+opzionale che indica se il risultato dovr\`a contenere duplicati. 
+\section{Semantica}
+La semantica di una query SQL \`e definita secondo questa strategia: si computa il prodotto cartesiano della relation-list, si eliminano le tuple che non 
+rispettano la qualification e se DISTINCT \`e specificato si eliminano i duplicati.Le range-variables sono necessarie unicamente se la tabella compare due 
+volte in FROM, ma \`e buona pratica usarle sempre. I campi nel risultato si possono rinominare in SELECT attraverso \emph{AS} o $=$, mentre \emph{LIKE} 
+permette di effettuare dello string matching, dove \_ indica qualsiasi carattere e $\%$ per $0$ o pi\`u istanze di un carattere arbitrario. 
+\section{Operazioni}
+\subsection{Unione}
+Pu\`o essere utilizzata per computare il risultato di ogni due insieme di tuple compatibili per l'unione attraverso la parola chiave \emph{UNION} o 
+\emph{EXCEPT} che computa il compatibile.
+\subsection{Intersezione}
+Viene utilizzata per computare l'intersezione di tuple compatibili per l'unione attraverso la parola chiave \emph{INTERSECT}.
+\section{Nested query}
+Ogni clausola \emph{WHERE} pu\`o contenere a sua volta una query per fare paragoni con parole chiave come \emph{IN} o \emph{EXISTS} che verificano 
+l'esistenza del primo elemento nella query successiva, \emph{UNIQUE} che verifica se \`e unico o operazione booleana con \emph{ANY, ALL, IN}. 
+\subsection{Divisioni in SQL}
+\emph{SELECT S.x FROM S WHERE NOT EXISTS (SELECT B.y FROM B WHERE NOT EXISTS (SELECT A.x FROM A WHERE A.y=B.y AND S.x=A.x))}, o 
+\emph{SELECT S.x FROM S WHERE NOT EXISTS ((SELECT B.y FROM B EXCEPT (SELECT A.x FROM A WHERE S.x=B.x))}
+\section{Operatori aggregati}
+Sono un'estensione dall'algebra relazionale, permettono di svolgere operazioni su una singola colonna, sono: \emph{COUNT, AVG, MAX, MIN, SUM}.
+\section{Grouping}
+\emph{SELECT [DISTINCT] target-list FROM relation-list WHERE qualification GROUP BY grouping-list HAVING group-qualification}, dove la target list deve 
+avere una lista attributi sottoinsieme della grouping-list. Ogni tupla di risposta corrisponde a un gruppo e gli attributi hanno un singolo valore per 
+gruppo. Dopo aver eseguito il prodotto cartesiano della relation list si eliminano le tuple che non rispettano la qualificazione e quelle rimanenti sono
+partizionate in gruppi secondo i valori degli attributi nella grouping list, successivamente \`e applicata la group-qualification per eliminare le tuple
+che non la rispettano, tali espressioni devono avereun valore singolo per gruppo.
+\section{Null Values}
+Valori di campi nelle tuple possono essere sconosciuti o non specificati, pertanto per queste situazioni si introduce il valore \emph{null}. La presenza di 
+questo valore rende molto difficile garantire la verit\`a delle condizioni \emph{WHERE}. Si rendono possibili o necessarie nuove operazioni come per esempio
+gli outer joins. 
+\section{Integrity constraints}
+Gli IC descrivono delle condizioni che ogni istanza legale di una relazione deve soddisfare, pertanto inserts, updates, deletes che li violano non vengono 
+considerati. Gli IC possono essere di dominio, di primary key, di foreign key e generali. Quelli di dominio sono sempre forzati.
+\subsection{General constraints}
+Utili quando constraints pi\`u geneali di quelli riguardanti unicamente le chiavi sono richiesti. Le queries possono essere utilizzate per creare questi
+constraints e possono essere nominati attraverso \emph{Constraint $<$nome constraint$>$ CHECK $<$descrizione constraint$>$}.
+\subsection{Constraints riguardanti pi\`u relazioni}
+Se un constraint riguarda pi\`u relazioni viene chiamato asserzione e creato attraverso la query \emph{CREATE ASSERTION} in modo che non dipenda dall'effettiva popolazione di nessuna di quelle query. 
+\section{Triggers}
+I triggers sono procedure che cominciano in maniera automatica se un certo evento accade all'interno del DBMS, sono formati da tre parti: l'evento che
+attiva il trigger, la condizione che verifica se l'azione del trigger debba essere applicata e l'azione che il trigger compie. 

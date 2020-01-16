@@ -1,0 +1,86 @@
+\chapter{Normal form}
+Detta anche Boyce-Codd normal form.
+\section{Functional dependencies}
+Una dipendenza funzionale \`e un tipo generale di constraint sulle relazioni.
+\subsubsection{Sintassi}
+Sia $R(A_1, \dots, A_n, B_1, \dots, B_m, C_1, \dots, C_k)$ uno schema relazionale, si definisce una dipendenza funzionale come:
+\begin{equation*}
+A_1,\dots,A_n\rightarrow B_1, \dots, B_m
+\end{equation*}
+\subsubsection{Semantica}
+Ogni qual volta due tuple $t_1$ e $t_2$ in un'istanza di $R$ $A_1, \dots, A_n$ determinano gli attributi $B_1, \dots, B_m$. Se questo \`e dimostrato per ogni istanza
+della relazione si dice che $R$ soddisfa la dipendenza funzionale. 
+\section{Chiavi}
+Sia $A_1, \dots, A_n$ degli attributi di $R$, questi sono una chiave se determinano funzionalmente tutti gli attributi di $R$ e nessun sottoinsieme di $A_1, dots, A_n$ determina funzionalmente tutti gli attributi di 
+$R$. 
+\section{Decomposizione}
+L'idea \`e di decomporre la relazione in due per evitare i problemi che nascono da dati ridondanti. La ricomposizione avviene attraverso un join. Data la relazione $R(A,B,C)$ in cui vale la FD $A\rightarrow B$ se
+$R=\pi_{A,B}(R)\bowtie\pi_{A,C}(R)$ si dice che la decomposizione \`e lossless se non si perdono informazioni (il numero di tuple generato dall'operazione \`e uguale a quello di $R$). 
+\subsection{Non vengono perse tuple}
+\subsubsection{Enunciato}
+Per ogni relazione $R(A,B,C)$, $R\subseteq \pi_{A,B}(R)\bowtie\pi_{A,C}(R)$.
+\subsubsection{Dimostrazione}
+Sia $(a, b, c)\in R$, allora $(a, b)\in \pi_{A,B}(R)$ e $(a, c)\in \pi_{A,C}(R)$. Facendo un'operazione di join su queste tuple si ottiene $(a, b, c)\in \pi_{A,B}(R)\bowtie\pi_{A,C}(R)$. 
+\subsection{Decomposizioni lossless e dipendenze funzionali}
+\subsubsection{Enunciato}
+Se $A\rightarrow B$ in $R$ allora $\pi_{A,B}(R)\bowtie\pi_{A,C}(R)\subseteq R$.
+\subsubsection{Dimostrazione}
+Sia $(a, b, c)\in \pi_{A,B}(R)\bowtie\pi_{A,C}(R)$, allora $(a, b)\in \pi_{A, B}(R)$ e $(a, c)\in \pi_{A, C}(R)$, pertanto esistono $c'$ e $b'$ tali che $(a, b, c')\in R$ e $(a, b', c)\in R$ ma $(a, b, c)\in R$ e $(a, b', c)\in R$
+implica che $b=b'$, pertanto $(a, b, c)=(a, b', c)\in R$. 
+\section{BCNF Boyce-Codd Normal form}
+\subsection{Definizione}
+Una relazione \`e in BCNF se e solo se esiste una dipendenza funzionale non banale tale che $A_1A_2\cdots A_n\rightarrow B_1B_2\cdots B_m$ per $R$ allora $\{A_1, \dots, A_n\}$ \`e una chiave o superchiave
+per $R$.
+\subsection{Decomposizioni in BNFC}
+SI applica ripetutamente la tecnica di decomposizione in modo che sia lossless controllando per dipendenze funzionali non banali la cui parte sinistra non sia una superchiave e rompere lo schema in due fino ad
+ottenere un insieme di schema in BCNF.
+\subsubsection{Algoritmo di decomposizione}
+Un algoritmo di decomposizione in BCNF prende in input una relazione $R_0$ con un insieme di dipendenze funzionali $F_0$ e ritorna una decomposizione di $R_0$ in una collezione di relazioni ognuna delle
+quali sono in BCNF. Applicando l'algoritmo ricorsivamente cominciando con $R=R_0$ e $S=S_0$:
+\begin{itemize}
+\item Controllare se $R$ \`e in BCNF, se s\`i ritornare $\{R\}$.
+\item Se esistono delle violazioni BCNF, considerandone una $X\rightarrow Y$ si scelga $R_1=X\cup Y$ e $R_2=\{att|att\in R\land att\not\in Y)\}$. Si trovino gli insiemi di dipendenze funzionali che valgono su 
+$R_1$ e $R_2$.
+\item Si decompongano ricorsivamente$R_1$ e $R_2$ e si ritorni l'unione di tali decomposizioni.
+\end{itemize}
+\section{Regole di inferenza per le dipendenze funzionali}
+\begin{itemize}
+\item Dipendenze funzionali banali: se $\{B_1, \dots, B_m\}\subseteq\{A_1, \dots, A_n\}$ allora $A_1\cdots A_n\rightarrow B_1\cdots B_m$.
+\item Augmentation: se $A_1\cdots A_n\rightarrow B_1\cdots B_m$ allora $A_1\cdots A_nC_1\cdots C_k\rightarrow B_1\cdots B_m$ per qualsiasi $\{C_1,\dots, C_k\}$.
+\item Transitivit\`a: se $A_1\cdots A_n\rightarrow B_1\cdots B_m$ e $B_1\cdots B_m\rightarrow C_1\cdots C_k$ allora $A_1\cdots A_n\rightarrow C_1\cdots C_k$. 
+\end{itemize}
+\subsection{Inferenza per le dipendenze funzionali}
+Dato un insieme $F$ di dipendenze funzionali si vuole apprendere se $X\rightarrow Y$ \`e una conseguenza di $X$. Questo si ottiene data $X$ trovando la chiusura $X^+$ di $X$, ovvero l'insieme di tutti gli 
+attributi che potrebbero essere sul lato destro di $X$: $X^+=\{A|X\rightarrow A\text{segue da } F\}$.
+\subsubsection{Computare la chiusura}
+L'algoritmo prende in input un insieme di dipendenze funzionali $F$ e un insieme $\{A_1,\dots, A_n\}$ di attributi. Si assuma che ogni dipendenza funzionale abbia solo un attributo sulla destra. Alla fine ritorna
+la chiusura $\{A_1,\dots, A_n\}^+$.
+\begin{itemize}
+\item Sia $X=\{A_1,\dots, A_n\}$, alla terminazione $X$ sar\`a la chiusura.
+\item Si trovi una dipendenza funzionale nella forma $B_1\cdots B_m\rightarrow C$ tale che $\{B_1,\dots, B_m\}\in X$ e  $C\not\in X$. 
+\item Se non esiste tale $F$ termina, altrimenti aggiungi $C$ a $X$ e ritorna al secondo passo. 
+\end{itemize}
+Essendoci solo un numero finito di attributi l'algoritmo termina. Alla fine per vedere se $A_1\cdots A_n\rightarrow B$ segue da $F$ si controlla se $B$ \`e in $\{A_1,\dots, A_n\}^+$-
+\subsubsection{Dimostrazione dell'algoritmo di chiusura}
+Sia un insieme fissato di dipendenza funzionali $F$ e $S$ l'insieme degli attributi e $X$ l'insieme computato dall'algoritmo e $Y$ la chiusura. Si deve dimostrare che $X=Y$. Si dimostra prima che $X\subseteq 
+Y$. La prova si fa di induzione sul numero di passi dell'algoritmo. Nel caso base tutti gli attributi di $X$ sono gi\`a in $S$. Si assuma che $S\rightarrow A$ per ogni $A\in X$. Se si applica un algoritmo utilizzando
+una dipendenza funzionale la cui parte sinistra \`e contenuta in $X$ si pu\`o utilizzare la transitivit\`a per mostrare che tutti i nuovi attributi sono determinati da $X$. Si dimostri ora che $Y\subseteq X$. Si
+supponga che $C$ sia nella chiusura ma non in $X$. Sia lo schema di $R$ $(A_1\cdots A_nB_1\cdots B_m)$ dove $X=\{A_1,\dots, A_n\}$. Se $C$ \`e in $Y$ e non in $X$ deve avere valori diversi in tuple diverse.
+Per induzione si dimostra che ad ogni passo dell'algoritmo i nuovi attributi aggiunti a $X$ devono avere lo stesso valore nelle tuple e si genera una contraddizione.
+\subsection{Calcolo della BCNF}
+Essendo ora in grado di trovare tutte le dipendenze funzionali implicate dall'insieme si possono trovare tutte le violazioni BCNF e decomporre la relazione se necessario. Si devono trovare le dipendenze 
+funzionali che valgono nelle nuove relazioni studiando le proiezioni delle dipendenze funzionali. Dato $R$ $L$ \`e un sottoinsieme degli attributi di $R$ e le dipendenze funzionali sono $F$. Si devono trovare
+le dipendenze funzionali che valgono su $R_1=\pi_L(R)$. Formalmente si devono trovare le dipendenze funzionali seguono da $F$ e coinvolgono unicamente attributi di $L$. Si deve trovare una base, un insieme
+minimo di dipendenze funzionali che implicano tutte le dipendenze funzionali che valgono su $R_1$. 
+\subsubsection{Algoritmo}
+Sia l'input $R,L,F$ come sopra e l'output l'insieme delle dipendenze funzionali che valgono in $\pi_L(R)$.
+\begin{itemize}
+\item Sia $T$ l'insieme vuoto.
+\item Per ogni $X\subseteq L$ si computi $X^+$. Questo potrebbe contenere attributi non in $L$. 
+\item Si aggiungano a $T$ tutte le dipendenze funzionali della forma $X\rightarrow A$ quando $A\in X^+\cap L$.
+\item Si minimizzi l'insieme ripetendo ogni volta possibile:
+\begin{itemize}
+\item Se ci sono dipendenze funzionali in $T$ che segue dalle altre eliminala.
+\item Se $YZ\rightarrow B$ \`e in $T$ e $Z\rightarrow B$ segue da $F$ la si sostituisca con $Z\rightarrow B$
+\end{itemize}
+\end{itemize}

@@ -1,0 +1,56 @@
+\chapter{Storage and indexing}
+I dati possono essere salvati su disco, in cui considerare pagine randomiche ha un costo fisso ma leggere pagine in sequenza \`e pi\`u efficente o tapes
+in cui i dati sono recuperati solo sequenzialmente. Si chiama file organization un metodo di ordinare i file di records su memoria esterna. Un record id
+\`e sufficiente per localizzarlo fisicamente e gli indici sono strutture dati che permettono di trovare i record id dati i valori nei campi di index search
+key. Un buffer manager prende pagine dalla memoria esterna al main memory buffer pool. I layer di file e indici fanno chiamate al buffer manager. Esistono 
+molte alternative, scelte in base alle necessit\`a:
+\begin{itemize}
+\item Heap file: ottima quando un tipico accesso \`e un file scan che recupera tutti i record.
+\item Sorted files: ottima quando i record devono essere recuperati in un certo ordine o secondo un certo range. 
+\item Indexes: strutture dati organizzate secondo alberi o hashing. 
+\end{itemize}
+\section{Indexes}
+Un indice su un file rende pi\`u veloce le selezioni sul search key fields per l'indice. Ogni sottoinsieme di campi di una relazione pu\`o essere un search
+key per l-indice della relazione. Non \`e una chiave della relazione. Un indice contiene una collezione di data entries e supporta un efficiente recupero di
+tutte le data entries $k*$ con una key value $k$. Dato $k*$ si trovano record con la chiave $k$ in al pi\`u in un'operazione di disco I/O. 
+\subsection{B+ Tree Indexes}
+Le pagine foglia contengono data entries e sono concatenate, le pagine non foglia contengono unicamente index entries e sono utilizzate unicamente per 
+direzionare la ricerca. Gli insert o delete richiedono di cercare dati foglia e poi cambiarne i valori. I cambi necessari possono riguardare anche
+livelli pi\`u alti dell'albero. 
+\subsection{Hash based indexes}
+Sono buoni per le selezioni d'uguaglianza. Gli indici sono una collezione di buckets, formati da primary pages e un numero arbitrario di overflow pages. Si rende 
+necessaria una hasing function $h$. Il risultato di $h(r)$ \`e il bucket cui $r$ appartiene $h$ controlla i search key fields di $r$. Per trovare il bucket di $r$ si 
+prendono gli ultimi $global\ depht$ numeri di bit di $h(r)$. Per l'insert, se il bucket \`e pieno lo si deve splittare allocando una nuova page e 
+redistribuendo. Se necessario si deve anche raddoppiare la directory per determinare il raddoppio si devono confrontare global depth e local depth. 
+\subsection{Alternative di data entry $\mathbf{k*}$ nell'indice}
+In una data entry $k*$ si possono salvare data record con valore di chiave $k$ o riduzioni di data records con valore di search key pari a $k$ o liste di riduzioni di data records con chiave di ricerva $k$. La
+scelta per alternative data entries \`e ortogonale alla tecnica di indexing utilizzata per localizzare data entries con un dato valore di chiave $k$. Tipicamente gli indici contengono informazioni ausiliarie che
+direzionano le ricerche verso le data entries desiderate.
+\subsubsection{Salvare data records con valore chiave $\mathbf{k}$}
+Se viene utilizzata questa alternativa la struttura di indice \`e un file di organizzazione per data records. Al massimo un indice di una data collezione di data records pu\`o utilizzare questa alternativa. Se vengono
+salvati numerosi data records il numero di pagine che contiene data entrie \`e alto e implica che la dimensione delle informazioni ausiliare dell'indice \`e alta. 
+\subsubsection{Salvare riduzioni di data records o liste di riduzioni}
+Le data entries sono tipicamente molto minori rispetto a data records, pertanto funziona meglio con data records grandi, specialmente se le chiavi sono piccole. La terza alternativa \`e pi\`u compatta della 
+seconda, ma porta a data entries di grandezza variabile anche se le chiavi di ricerca sono di lunghezza fissa. 
+\section{Classificazione degli indici}
+Se una search key contiene una primary key \`e chiamata un primary index, altrimenti un secondario. Se contiene una candidate key \`e detto unique. 
+\subsection{Clustered e unclustered}
+Se l'ordine dei data records \`e lo stesso o simile ordine delle data entries si chiama l'indice clustered, implicato dalla prima alternativa per le data entries. Un file pu\`o essere clustered su al pi\`u una search key.
+Il costo di recupero dei dati attraverso indici dipende fortemente da questa caratteristica.
+\subsubsection{Indici clustered}
+Per creare un indice clustered su data entries salvate in un Heap file si deve ordinare l'heap file lasciando spazio libero nelle pages per inserts futuri e pagine di overflow potrebbero rendersi necessarie in futuro.
+L'indice \`e clustered se ogni data entries con lo stesso valore di search key si trova sequenzialmente alle altre. 
+\section{Scelta degli indici}
+Per creare degli indici ottimi si considerino le queries pi\`u importanti e il piano migliore utilizzando gli indici correnti e si guardi se un pian migliore con indici addizionali, se \`e cos\`i lo si implementi. Prima id
+creare un indice si deve considerare l'impatto sugli updates nella workload: si deve fare un trade-off in quanto gli indici velocizzano le queries ma rallentano le operazioni di update e richiedono spazio su disco.
+\subsection{Linee guida sulla selezione degli indici}
+\begin{itemize}
+\item Gli attributi nelle clausole WHERE sono candidati per le chiavi di indice. Una condizione di match esatto suggerisce indici hash e query di range suggeriscono indici ad albero (il clustering aiuta molto in 
+questo ambito). 
+\item Search key multi attributo dovrebbero essere considerate quando una clausola WHERE contiene mutliple condizione. L'ordine degli attributi \`e importante per le range queries. Tali indici possono 
+qualche volta rendere possibili strategie index-only.
+\item Si provi a scegliere indici che diano benefici a pi\`u queries possibile. Essendo che un unico indice pu\`o essere clustrerizzato per relazione lo si scelga in base alle queries pi\`u importanti da cui ne 
+trarrebbero beneficio.
+\end{itemize}
+\section{Indici con searh keys composte}
+Una chiave di ricerca composta \`e una chiave di ricerca su una combinazione di campi. Le data entries nell'indice sono ordinate in modo da supportare range queries. 
