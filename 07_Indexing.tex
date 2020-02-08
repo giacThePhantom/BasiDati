@@ -21,7 +21,7 @@ livelli pi\`u alti dell'albero.
 Sono buoni per le selezioni d'uguaglianza. Gli indici sono una collezione di buckets, formati da primary pages e un numero arbitrario di overflow pages. Si rende 
 necessaria una hasing function $h$. Il risultato di $h(r)$ \`e il bucket cui $r$ appartiene $h$ controlla i search key fields di $r$. Per trovare il bucket di $r$ si 
 prendono gli ultimi $global\ depht$ numeri di bit di $h(r)$. Per l'insert, se il bucket \`e pieno lo si deve splittare allocando una nuova page e 
-redistribuendo. Se necessario si deve anche raddoppiare la directory per determinare il raddoppio si devono confrontare global depth e local depth. 
+redistribuendo. Se necessario si deve anche raddoppiare la directory: per determinare il raddoppio si devono confrontare global depth e local depth. 
 \subsection{Alternative di data entry $\mathbf{k*}$ nell'indice}
 In una data entry $k*$ si possono salvare data record con valore di chiave $k$ o riduzioni di data records con valore di search key pari a $k$ o liste di riduzioni di data records con chiave di ricerva $k$. La
 scelta per alternative data entries \`e ortogonale alla tecnica di indexing utilizzata per localizzare data entries con un dato valore di chiave $k$. Tipicamente gli indici contengono informazioni ausiliarie che
@@ -41,13 +41,13 @@ Il costo di recupero dei dati attraverso indici dipende fortemente da questa car
 Per creare un indice clustered su data entries salvate in un Heap file si deve ordinare l'heap file lasciando spazio libero nelle pages per inserts futuri e pagine di overflow potrebbero rendersi necessarie in futuro.
 L'indice \`e clustered se ogni data entries con lo stesso valore di search key si trova sequenzialmente alle altre. 
 \section{Scelta degli indici}
-Per creare degli indici ottimi si considerino le queries pi\`u importanti e il piano migliore utilizzando gli indici correnti e si guardi se un pian migliore con indici addizionali, se \`e cos\`i lo si implementi. Prima id
+Per creare degli indici ottimi si considerino le queries pi\`u importanti e il piano migliore utilizzando gli indici correnti. Si guardi se esiste un piano migliore con indici addizionali e se \`e cos\`i lo si implementi. Prima di
 creare un indice si deve considerare l'impatto sugli updates nella workload: si deve fare un trade-off in quanto gli indici velocizzano le queries ma rallentano le operazioni di update e richiedono spazio su disco.
 \subsection{Linee guida sulla selezione degli indici}
 \begin{itemize}
 \item Gli attributi nelle clausole WHERE sono candidati per le chiavi di indice. Una condizione di match esatto suggerisce indici hash e query di range suggeriscono indici ad albero (il clustering aiuta molto in 
 questo ambito). 
-\item Search key multi attributo dovrebbero essere considerate quando una clausola WHERE contiene mutliple condizione. L'ordine degli attributi \`e importante per le range queries. Tali indici possono 
+\item Search key multi attributo dovrebbero essere considerate quando una clausola WHERE contiene mutliple condizioni. L'ordine degli attributi \`e importante per le range queries. Tali indici possono 
 qualche volta rendere possibili strategie index-only.
 \item Si provi a scegliere indici che diano benefici a pi\`u queries possibile. Essendo che un unico indice pu\`o essere clustrerizzato per relazione lo si scelga in base alle queries pi\`u importanti da cui ne 
 trarrebbero beneficio.
