@@ -3,7 +3,7 @@ Un linguaggio di query permette di recuperare dati da un database. Il modello re
 basati sulla logica che permettono molte ottimizzazioni. Questi linguaggi non sono Touring completi e non sono utilizzati per calcoli complessi, ma 
 gestiscono in maniera ottima accessi a grandi gruppi di dati. Due linguaggi di query matematici sono alla base delle implementazioni: la relational algebra
 pi\`u operazionale, utile per rappresentare piani di esecuzione e il relational calculus che permette agli utenti di descrivere cosa vogliono e non come
-computarlo e non \`e operazionale ma dichiarativo. Una query \`e applicata alle istanze delle relazioni. Gli schema delle relazioni di input e di risultato 
+computarlo e non \`e operazionale ma dichiarativo. Una query \`e applicata alle istanze delle relazioni. Gli schema delle relazioni di input e di output 
 sono fissati, determinati dalla definizione dei costrutti del linguaggio di query. La notazione dei campi di una tabella pu\`o essere posizionale in modo 
 da facilitare la formalizzazione o nominativa in modo da facilitare la lettura. 
 \section{Operazioni}
@@ -23,7 +23,7 @@ specificato.
 La selezione seleziona le righe che soddisfano la condizione di selezione. Non ci sono duplicati nel risultato e lo schema rimane identico allo schema della
 tabella di input. 
 \subsection{Unione, intersezione e differenza}
-Queste operazioni prendono come input due tabelle compatibili rispetto all'untione: stesso numero di campi e campi corrispondenti dello stesso tipo. Lo 
+Queste operazioni prendono come input due tabelle compatibili rispetto all'unione: stesso numero di campi e campi corrispondenti dello stesso tipo. Lo 
 schema di risultato \`e quello analogo alle due tabelle.
 \subsection{Prodotto cartesiano}
 Ogni riga della prima tabella \`e accoppiata con una della seconda, lo schema risultato ha tutti i campi delle tabelle con i nomi ereditati se possibile, 
