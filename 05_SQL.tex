@@ -10,7 +10,7 @@ volte in FROM, ma \`e buona pratica usarle sempre. I campi nel risultato si poss
 permette di effettuare dello string matching, dove \_ indica qualsiasi carattere e $\%$ per $0$ o pi\`u istanze di un carattere arbitrario. 
 \section{Operazioni}
 \subsection{Unione}
-Pu\`o essere utilizzata per computare il risultato di ogni due insieme di tuple compatibili per l'unione attraverso la parola chiave \emph{UNION} o 
+Pu\`o essere utilizzata per computare il risultato di ogni insieme di tuple compatibili per l'unione attraverso la parola chiave \emph{UNION} o 
 \emph{EXCEPT} che computa il compatibile.
 \subsection{Intersezione}
 Viene utilizzata per computare l'intersezione di tuple compatibili per l'unione attraverso la parola chiave \emph{INTERSECT}.
@@ -27,7 +27,7 @@ Sono un'estensione dall'algebra relazionale, permettono di svolgere operazioni s
 avere una lista attributi sottoinsieme della grouping-list. Ogni tupla di risposta corrisponde a un gruppo e gli attributi hanno un singolo valore per 
 gruppo. Dopo aver eseguito il prodotto cartesiano della relation list si eliminano le tuple che non rispettano la qualificazione e quelle rimanenti sono
 partizionate in gruppi secondo i valori degli attributi nella grouping list, successivamente \`e applicata la group-qualification per eliminare le tuple
-che non la rispettano, tali espressioni devono avereun valore singolo per gruppo.
+che non la rispettano, tali espressioni devono avere un valore singolo per gruppo.
 \section{Null Values}
 Valori di campi nelle tuple possono essere sconosciuti o non specificati, pertanto per queste situazioni si introduce il valore \emph{null}. La presenza di 
 questo valore rende molto difficile garantire la verit\`a delle condizioni \emph{WHERE}. Si rendono possibili o necessarie nuove operazioni come per esempio
@@ -36,7 +36,7 @@ gli outer joins.
 Gli IC descrivono delle condizioni che ogni istanza legale di una relazione deve soddisfare, pertanto inserts, updates, deletes che li violano non vengono 
 considerati. Gli IC possono essere di dominio, di primary key, di foreign key e generali. Quelli di dominio sono sempre forzati.
 \subsection{General constraints}
-Utili quando constraints pi\`u geneali di quelli riguardanti unicamente le chiavi sono richiesti. Le queries possono essere utilizzate per creare questi
+Utili quando constraints pi\`u generali di quelli riguardanti unicamente le chiavi sono richiesti. Le queries possono essere utilizzate per creare questi
 constraints e possono essere nominati attraverso \emph{Constraint $<$nome constraint$>$ CHECK $<$descrizione constraint$>$}.
 \subsection{Constraints riguardanti pi\`u relazioni}
 Se un constraint riguarda pi\`u relazioni viene chiamato asserzione e creato attraverso la query \emph{CREATE ASSERTION} in modo che non dipenda dall'effettiva popolazione di nessuna di quelle query. 
