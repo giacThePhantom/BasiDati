@@ -79,7 +79,7 @@ legalit\`a delle schedules: i locks devono avere il loro significato inteso: un 
 \item Sia $l_i(X)$: $T_i$ richiede un lock su un elemento $X$ del database. 
 \item Si nota che \`e compito dello scheduler decidere se assecondare la richiesta o no.
 \item $u_i(X)$: $T_i$ rilascia il suo lock su $X$. 
-\item Consistenza: ogniqualvolta $T$ contiene un'azione $r_i(X)$ o $w_i(X)$ deve esserci un'azione precedente $l_i(X)$ la prima occorrenza di  $u_i(X)$ deve trovarsi dopo l'azione.
+\item Consistenza: ogniqualvolta $T$ contiene un'azione $r_i(X)$ o $w_i(X)$ deve esserci un'azione precedente $l_i(X)$ e la prima occorrenza di  $u_i(X)$ deve trovarsi dopo l'azione.
 \item Legalit\`a delle schedules: se una schedule contiene un'azione $l_i(X)$ seguita da $l_j(X)$ deve esiste un'azione $u_i(X)$ tra le due.   
 \end{itemize}
 \subsection{Locking scheduler}
