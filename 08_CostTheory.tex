@@ -2,12 +2,12 @@
 \section{Definizioni}
 \subsection{Page}
 Ogni volta che a un hard disk viene richiesto di leggere o scrivere informazioni questo lo fa operando su unit\`a di lunghezza specifica conosciute come 
-pages,denotate con $P$.
+pages, denotate con $P$.
 \subsection{Dimensione di un record}
 I record di una relation hanno tutti la stessa dimensione, che indica quanti byte questo occupa quando viene salvato nel disco. Se non \`e data la dimensione
 di un record si ottiene dai tipi degli attributi che lo compongono. \`E denotata con $t_R$.
 \subsection{Pages di una relazione}
-I dati di ogni relazione sono salvati su disco. Quando una page contiene dati di una relazione nessun record da un'altra \`e permesso su tale relazione. 
+I dati di ogni relazione sono salvati su disco. Su ogni page contenente dati di una relazione non sono permessi record di un'altra relazione. 
 Il database cerca pertanto di riempire la pagina con pi\`u record possibili provenienti dalla stessa relazione. Si indica con $P_R$ il numero di pagine che
 la relazione occupa.
 \subsection{Cardinalit\`a di una relazione}
@@ -16,17 +16,17 @@ La cardinalit\`a di una relazione \`e il numero di record che essa contiene: $|R
 Si intende con cardinalit\`a di un attributo il numero di valori distinti che questo assume nei record della relazione. Per un attributo $A$ della relazione
 $R$ si indica con $|R.A|$. Le chiavi primarie hanno la stessa cardinalit\`a della relazione, mentre per un attributo generico $A$ si avr\`a $|R|\ge|R.A|$.
 \subsection{Record per page}
-Essendo contenuti in una page record provenienti dalla stessa relazione e un record non diviso tra pi\`u page il numero di record di una relazione $R$ in
+Dato che i record contenuti in una page provengono dalla stessa relazione e un record non pu\`o essere diviso tra pi\`u page, il numero di record di una relazione $R$ in
 una page di dimensione $P$ sar\`a $\lfloor\frac{P}{t_R}\rfloor$.
 \subsection{Dimensioni di una relazione}
 La dimensione di una relazione \`e lo spazio che occupa su disco. Essendoci la possibilit\`a che si avanzi spazio nelle pages, la dimensione effettiva pu\`o
-essere superiore di quella reale: $\lceil\frac{|R|}{\frac{P}{t_R}}\rceil$.
+essere superiore di quella reale: $P\cdot\lceil\frac{|R|}{\lfloor\frac{P}{t_R}\rfloor}\rceil$.
 \subsection{Costo}
 Operazioni che coinvolgono lettura o scrittura su disco sono dette di I/O, quelle fatte solo in memoria sono dette in-memory. Essendo le prime molto pi\`u costose sono quelle che determinano il costo di 
 un'operazione generica. Si assume per definizione che il costo per leggere o scrivere \`e pari a $1$. 
 \section{Operazioni}
 \subsection{Scan}
-Un'operazione id scan \`e una lettura sequenziale della relazione. Il costo \`e il costo di lettura di tutte le pagine occupate dalla relazione, pertanto $Costo\ of\ scan= \# pages\ in\ relation$. Affinch\`e il database
+Un'operazione di scan \`e una lettura sequenziale della relazione. Il costo \`e il costo di lettura di tutte le pagine occupate dalla relazione, pertanto $Costo\ of\ scan= \# pages\ in\ relation$. Affinch\`e il database
 possa trovare e leggere un record in una relazione normalmente richiede di effettuare uno scan. 
 \subsection{Sorting}
 Se si deve ordinare una relazione basandosi sul valore di un attributo specifico ci sono due algoritmi specifici: uno dei due assume che il database possiede solo tre buffer nella sua memoria. Se $N$ \`e il numero di
@@ -35,48 +35,48 @@ disposizione il costo di sorting \`e $2N(|\log_{B-1}\lceil \frac{N}{B}\rceil|+1)
 \subsection{Indici}
 Gli indici sono strutture ausiliarie che sono costruite basate sul valore di un attributo specifico. Aiutano a identificare la posizione del record che possiede un valore nell'attributo che soddisfa delle condizioni. 
 \subsubsection{Indice Hash}
-Utilizza a trovare records che soddisfano condizioni di uguaglianza sull'attributo indicizzato.
+Aiuta a trovare records che soddisfano condizioni di uguaglianza sull'attributo indicizzato.
 \subsubsection{Indice B+ tree}
 \`E un indice che aiuta  a trovare records che soddisfano condizioni di uguaglianza o di range. 
 \subsection{Indici composti}
 \`E possibile creare indici che dipendono da pi\`u di un attributo. Sono chiamati indici composti. Nel caso degli alberi B+ l'ordine con cui questi attributi sono definiti gioca un ruolo: i dati sono indicizzati prima
 basandosi sul primo campo e successivamente sul secondo, poi sul terzo. Pertanto un albero B+ pu\`o essere utilizzato quando si cerca per attributi sull'indice composto e quelli al suo inizio ma non alla sua fine. 
 \subsection{Aggiornare indici}
-Ogni volta che una relazione \`e aggiornata anche l'indice deve esserlo che pu\`o avere un effetto riguardo il tempo di esecuzione della query, pertanto si deve limitare il numero di indici.
+Ogni volta che una relazione \`e aggiornata anche l'indice deve esserlo e questo pu\`o influire sul tempo di esecuzione della query, pertanto si deve limitare il numero di indici.
 \subsection{Lookup di indici}
 L'operazione di utilizzare l'indice per identificare dove i records che soddisfano una condizione sono posizionati \`e chiamata lookup di indice. L'output \`e un insieme di puntatori alle pages che contengono i 
-records. Gli indici occupano anche spazio. In particolare il costo medio di un indice hash \`e di $1.2$, mentre per un albero B+ \`e di $\log_s|R.A|$ il valore $s$ \`e il numero massimo di figli di un nodo dell'albero.
+records. Gli indici occupano anche spazio. In particolare il costo medio di un indice hash \`e di $1.2$, mentre per un albero B+ \`e di $\log_s|R.A|$ dove $s$ \`e il numero massimo di figli di un nodo dell'albero.
 Il costo di lookup \`e denotato come $L$. 
 \subsection{Il fattore di selettivit\`a}
 Una questione importante \`e sapere quanti qualifiyng records sono recuperati data una condizione. Data una condizione $c$ e una relazione $R$ si denota con $R_c$ i records di $R$ che soddisfano $c$. Questi
-dati sono mantenuti nel database come statistiche. Si pu\`o assumere che i valori hanno un'uguale distribuzione, pertanto se si ha una relazione $R$ con un attributo $A$ il numero di qualifiyng records che 
+dati sono mantenuti nel database come statistiche. Si pu\`o assumere che i valori abbiano un'uguale distribuzione, pertanto se si ha una relazione $R$ con un attributo $A$, il numero di qualifiyng records che 
 soddisfano la condizione $A=x$ sono $|R_{A=c}|=\dfrac{|R|}{|R.A|}$. Si definisce il fattore di selettivit\`a la percentuale del numero totale di records che si aspetta siano recuperati da una condizione, pertanto 
-per il fattore $f$, $|R_c|=f|R|$. 
+per il fattore $f$, $|R_c|=f\cdot|R|$. 
 \subsection{Clustered/Unclustered}
 Un indice pu\`o essere clustered o unclustered. Il primo vuol dire che i records che soddisfano una condizione sono salvati sequenzialmente. In caso di un indice unclustered il lookup ritorna un page-pointer per
 ogni qualifying record sul disco, mentre nel caso di un indice clusterizzato un puntatore \`e ritornato per le pagine che contengono il qualifying record. Per una condizione $c$ su una relazione $R$ il numero
 di page pointers ritornato da un lookup di un indice clusterizzato \`e: $\# page\ occupate\ dalle\ tuple=\frac{\# tuple\ che\ soddisfano\ la\ condizione}{\# tuple\ di\ R\ che\ stanno\ in\ una\ page}=\dfrac{|R_c|}{
 \lfloor \frac{P}{t_r}\rfloor}$.
 \subsection{Costo di recupero dei qualifying records}
-Per recuperare qualifying records dopo un lookup dell'indice ha il costo di lettura delle pagine per cui il lookup ha ritornato un puntatore. Se l'indice \`e unclusterizzato il costo sar\`a $L+|R_c|$, se \`e 
-clusterizzato il costo \`e $L=\dfrac{|R_c|}{\lfloor \frac{P}{t_r}\rfloor}$. 
+Recuperare qualifying records dopo un lookup dell'indice ha come costo la lettura delle pagine per cui il lookup ha ritornato un puntatore. Se l'indice \`e unclusterizzato il costo \`e $L+|R_c|$, se \`e 
+clusterizzato il costo \`e $L+\dfrac{|R_c|}{\lfloor \frac{P}{t_r}\rfloor}$. 
 \subsection{Costo di un operatore di update}
 Il costo di un update \`e il costo del lookup dell'indice pi\`u il costo di lettura della pagina pi\`u il costo di scrittura della pagina: $Lookup+\# pages\ che\ contengono\ il\ record\ da\ cambiare\cdot(1+1)$.
 \subsection{Join}
-Il join \`e l'operatore pi\`u utilizzato pertanto esistono diversi algoritmi per efficientemente implementarlo. Siano date due relazioni una $R$ e l'altra $S$.
+Il join \`e l'operatore pi\`u utilizzato pertanto esistono diversi algoritmi per implementarlo efficientemente. Siano date due relazioni $R$ e $S$.
 \subsubsection{Nested loops join}
-\`E il metodo che pu\`o essere sempre fatto in quanto non necessita di nessuna struttura ausiliaria. Legge la prima relazione e per ogni pagina della prima legge l'intera seconda. Pertanto se $R\bowtie S$ avr\`a
-un costo di $P_R+P_S\cdots P_R$. \`E sempre meglio cominciare dalla relazione pi\`u piccola.
+\`E il metodo che pu\`o essere sempre fatto in quanto non necessita di nessuna struttura ausiliaria. Legge la prima relazione e per ogni pagina della prima legge l'intera seconda. Pertanto $R\bowtie S$ avr\`a
+un costo di $P_R+P_S\cdot P_R$. \`E sempre meglio cominciare dalla relazione pi\`u piccola.
 \subsubsection{Sort merge join}
 Si ordina ogni relazione e poi si svolge il join attraverso un passaggio verso ogni relazione, pertanto il costo \`e $costo\ per\ ordinare\ R+costo\ per\ ordinare\ S+P_R+P_S$. 
 \subsubsection{Hash join}
 Assumendo di avere abbastanza memoria per salvare una struttura hash si pu\`o costruirla e utilizzarla per fare il join. Ha costo $3\cdot(P_R+P_S)$. 
 \subsubsection{Index nested loops join}
-Utilizzato quando c'\`e un indice che pu\`o essere utilizzato. Si regge una relazione e poi per ogni record si usa l'indice dell'altra per selezionare i matching records. L'indice della seconda relazione deve essere
+Utilizzato quando c'\`e un indice che pu\`o essere sfruttato. Si legge una relazione e poi per ogni record si usa l'indice dell'altra per selezionare i matching records. L'indice della seconda relazione deve essere
 sull'attributo di join. Il costo sar\`a $costo\ per\ leggere\ R+\# recordsInR\cdot costo\ per\ recuperare\ matching\ records\ in\ S=P_R+|R|\cdot(Index\ Lookup\ cost+cost\ of\ retrieving\ qualifying\ records)$. 
 \subsection{Salvare i risultati di una query}
 I risultati di una query possono essere risalvati nel database. Il costo di questa operazione \`e il numero di pages in cui si rende necessario scrivere, ovvero il numero di pagine che il record occupa. 
-$\# pages\ fot\ the\ tuples=\lceil\dfrac{\# tuples}{\# tuples\ per\ page}\rceil=\dfrac{\# tuples}{\rfloor\frac{P}{t}\rfloor}$. 
+$\# pages\ for\ the\ tuples=\lceil\dfrac{\# tuples}{\# tuples\ per\ page}\rceil=\dfrac{\# tuples}{\lfloor\frac{P}{t}\rfloor}$. 
 \subsection{Esecuzione e  query plans}
 Quando una query viene passata al database per l'esecuzione questo la trasforma in un query plan, un albero di operazioni in algebra relazionale che implementano la query. Possono esistere diversi query plans
 per la stessa query. Dato un query plan si rende necessario computare il costo totale, ovvero il costo di ogni operatore del nodo. Per ogni nodo si rende necessario sapere il costo, il numero di records che genera. 
@@ -85,4 +85,4 @@ Il database possiede una componente speciale detta ottimizzazione il cui ruolo \
 Si definiscono operatori on the fly gli operatori la cui operazione pu\`o essere svolta mentre i records arrivano in quanto non si necessita di aspettare per l'arrivo di tutti i risultati. Il loro costo \`e zero in quanto
 vengono svolti in memoria. 
 \subsection{Operatori index-only}
-Un'operazione che non richiede acceso ai records ma pu\`o trovare dall'indice cosa \`e richiesto.
+Un'operazione che non richiede acceso ai records ma pu\`o trovare dall'indice ci\`o che \`e richiesto.
