@@ -20,7 +20,7 @@ Dato che i record contenuti in una page provengono dalla stessa relazione e un r
 una page di dimensione $P$ sar\`a $\lfloor\frac{P}{t_R}\rfloor$.
 \subsection{Dimensioni di una relazione}
 La dimensione di una relazione \`e lo spazio che occupa su disco. Essendoci la possibilit\`a che si avanzi spazio nelle pages, la dimensione effettiva pu\`o
-essere superiore di quella reale: $P\cdot\lceil\frac{|R|}{\lfloor\frac{P}{t_R}\rfloor}\rceil$.
+essere superiore di quella reale: $\lceil\frac{|R|}{\lfloor\frac{P}{t_R}\rfloor}\rceil$.
 \subsection{Costo}
 Operazioni che coinvolgono lettura o scrittura su disco sono dette di I/O, quelle fatte solo in memoria sono dette in-memory. Essendo le prime molto pi\`u costose sono quelle che determinano il costo di 
 un'operazione generica. Si assume per definizione che il costo per leggere o scrivere \`e pari a $1$. 
