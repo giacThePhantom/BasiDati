@@ -1,5 +1,5 @@
-# BasiDati
-Riassunti del corso Basi di Dati tenuto dai professori Velegrakis e Kuper. Università di Trento 2019/2020
+# Basi di Dati
+Riassunti del corso Basi di Dati tenuto dai professori Velegrakis e Kuper. Università di Trento 2019/2020.
 ## Struttura dei file
 Il file latex Principal.tex deve contenere unicamente input al prefisso e ai capitoli i quali conterranno tutti i contenuti. Il 
 file prefix.tex contiene tutti i pacchetti utilizzati (e molti altri per comodità) e delle macro che potrebbero rendere il lavoro 
