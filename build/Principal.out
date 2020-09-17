@@ -1,0 +1,127 @@
+\BOOKMARK [0][-]{chapter.1}{Introduzione}{}% 1
+\BOOKMARK [1][-]{section.1.1}{Gestire dati}{chapter.1}% 2
+\BOOKMARK [1][-]{section.1.2}{File systems e DBMS}{chapter.1}% 3
+\BOOKMARK [2][-]{subsection.1.2.1}{Vantaggi di un DBMS}{section.1.2}% 4
+\BOOKMARK [1][-]{section.1.3}{Descrivere e salvare dati in un DBMS}{chapter.1}% 5
+\BOOKMARK [2][-]{subsection.1.3.1}{Livelli di astrazione}{section.1.3}% 6
+\BOOKMARK [2][-]{subsection.1.3.2}{Data indipendence}{section.1.3}% 7
+\BOOKMARK [1][-]{section.1.4}{Query}{chapter.1}% 8
+\BOOKMARK [1][-]{section.1.5}{Transaction management}{chapter.1}% 9
+\BOOKMARK [2][-]{subsection.1.5.1}{Esecuzione concorrente di transazioni}{section.1.5}% 10
+\BOOKMARK [2][-]{subsection.1.5.2}{Transazioni incomplete e crash di sistema}{section.1.5}% 11
+\BOOKMARK [1][-]{section.1.6}{Struttura di un DBMS}{chapter.1}% 12
+\BOOKMARK [0][-]{chapter.2}{The entity relationship model}{}% 13
+\BOOKMARK [1][-]{section.2.1}{Database design e ER diagram}{chapter.2}% 14
+\BOOKMARK [1][-]{section.2.2}{Entit\340, attributi e entity set}{chapter.2}% 15
+\BOOKMARK [1][-]{section.2.3}{Relazioni e relationship set}{chapter.2}% 16
+\BOOKMARK [1][-]{section.2.4}{Capacit\340 addizionali dell'ER model}{chapter.2}% 17
+\BOOKMARK [2][-]{subsection.2.4.1}{Key constraints}{section.2.4}% 18
+\BOOKMARK [2][-]{subsection.2.4.2}{Participation constraints}{section.2.4}% 19
+\BOOKMARK [2][-]{subsection.2.4.3}{Weak entities}{section.2.4}% 20
+\BOOKMARK [2][-]{subsection.2.4.4}{Class hierarchy}{section.2.4}% 21
+\BOOKMARK [2][-]{subsection.2.4.5}{Aggregation}{section.2.4}% 22
+\BOOKMARK [1][-]{section.2.5}{Conceptual design con ER model}{chapter.2}% 23
+\BOOKMARK [2][-]{subsection.2.5.1}{Entit\340 o attributo}{section.2.5}% 24
+\BOOKMARK [2][-]{subsection.2.5.2}{Entit\340 o relazione}{section.2.5}% 25
+\BOOKMARK [2][-]{subsection.2.5.3}{Binary or ternary relationship}{section.2.5}% 26
+\BOOKMARK [2][-]{subsection.2.5.4}{Relazione ternaria o aggragazione}{section.2.5}% 27
+\BOOKMARK [0][-]{chapter.3}{Il modello relazionale}{}% 28
+\BOOKMARK [1][-]{section.3.1}{Creare e modificare relazioni utilizzando SQL}{chapter.3}% 29
+\BOOKMARK [1][-]{section.3.2}{Integrity constraints sulle relazioni}{chapter.3}% 30
+\BOOKMARK [2][-]{subsection.3.2.1}{Key constraints}{section.3.2}% 31
+\BOOKMARK [2][-]{subsection.3.2.2}{Foreign key constraints}{section.3.2}% 32
+\BOOKMARK [1][-]{section.3.3}{Constraints generali}{chapter.3}% 33
+\BOOKMARK [1][-]{section.3.4}{Forzare integrity constraints}{chapter.3}% 34
+\BOOKMARK [2][-]{subsection.3.4.1}{Transazioni e constraints}{section.3.4}% 35
+\BOOKMARK [1][-]{section.3.5}{Querying dati relazionali}{chapter.3}% 36
+\BOOKMARK [1][-]{section.3.6}{Trasformazioni da ER a relational}{chapter.3}% 37
+\BOOKMARK [2][-]{subsection.3.6.1}{Da entity sets a tables}{section.3.6}% 38
+\BOOKMARK [2][-]{subsection.3.6.2}{Da relationship sets senza constraints a tables}{section.3.6}% 39
+\BOOKMARK [2][-]{subsection.3.6.3}{Da relationship sets con key constraints a tables}{section.3.6}% 40
+\BOOKMARK [2][-]{subsection.3.6.4}{Da relationship set con partecipation constraints a tables}{section.3.6}% 41
+\BOOKMARK [2][-]{subsection.3.6.5}{Da weak entities a tables}{section.3.6}% 42
+\BOOKMARK [2][-]{subsection.3.6.6}{Tradurre gerarchie di classi}{section.3.6}% 43
+\BOOKMARK [2][-]{subsection.3.6.7}{Tradurre aggregazioni}{section.3.6}% 44
+\BOOKMARK [1][-]{section.3.7}{Viste}{chapter.3}% 45
+\BOOKMARK [2][-]{subsection.3.7.1}{Data indipendence, security}{section.3.7}% 46
+\BOOKMARK [2][-]{subsection.3.7.2}{Aggiornamenti su viste}{section.3.7}% 47
+\BOOKMARK [1][-]{section.3.8}{Eliminare e alterare tabelle e viste}{chapter.3}% 48
+\BOOKMARK [0][-]{chapter.4}{Relational Algebra}{}% 49
+\BOOKMARK [1][-]{section.4.1}{Operazioni}{chapter.4}% 50
+\BOOKMARK [2][-]{subsection.4.1.1}{Proiezione}{section.4.1}% 51
+\BOOKMARK [2][-]{subsection.4.1.2}{Selezione}{section.4.1}% 52
+\BOOKMARK [2][-]{subsection.4.1.3}{Unione, intersezione e differenza}{section.4.1}% 53
+\BOOKMARK [2][-]{subsection.4.1.4}{Prodotto cartesiano}{section.4.1}% 54
+\BOOKMARK [2][-]{subsection.4.1.5}{Joins}{section.4.1}% 55
+\BOOKMARK [2][-]{subsection.4.1.6}{Divisione}{section.4.1}% 56
+\BOOKMARK [0][-]{chapter.5}{SQL}{}% 57
+\BOOKMARK [1][-]{section.5.1}{Semantica}{chapter.5}% 58
+\BOOKMARK [1][-]{section.5.2}{Operazioni}{chapter.5}% 59
+\BOOKMARK [2][-]{subsection.5.2.1}{Unione}{section.5.2}% 60
+\BOOKMARK [2][-]{subsection.5.2.2}{Intersezione}{section.5.2}% 61
+\BOOKMARK [1][-]{section.5.3}{Nested query}{chapter.5}% 62
+\BOOKMARK [2][-]{subsection.5.3.1}{Divisioni in SQL}{section.5.3}% 63
+\BOOKMARK [1][-]{section.5.4}{Operatori aggregati}{chapter.5}% 64
+\BOOKMARK [1][-]{section.5.5}{Grouping}{chapter.5}% 65
+\BOOKMARK [1][-]{section.5.6}{Null Values}{chapter.5}% 66
+\BOOKMARK [1][-]{section.5.7}{Integrity constraints}{chapter.5}% 67
+\BOOKMARK [2][-]{subsection.5.7.1}{General constraints}{section.5.7}% 68
+\BOOKMARK [2][-]{subsection.5.7.2}{Constraints riguardanti pi\371 relazioni}{section.5.7}% 69
+\BOOKMARK [1][-]{section.5.8}{Triggers}{chapter.5}% 70
+\BOOKMARK [0][-]{chapter.6}{Normal form}{}% 71
+\BOOKMARK [1][-]{section.6.1}{Functional dependencies}{chapter.6}% 72
+\BOOKMARK [1][-]{section.6.2}{Chiavi}{chapter.6}% 73
+\BOOKMARK [1][-]{section.6.3}{Decomposizione}{chapter.6}% 74
+\BOOKMARK [2][-]{subsection.6.3.1}{Non vengono perse tuple}{section.6.3}% 75
+\BOOKMARK [2][-]{subsection.6.3.2}{Decomposizioni lossless e dipendenze funzionali}{section.6.3}% 76
+\BOOKMARK [1][-]{section.6.4}{BCNF Boyce-Codd Normal form}{chapter.6}% 77
+\BOOKMARK [2][-]{subsection.6.4.1}{Definizione}{section.6.4}% 78
+\BOOKMARK [2][-]{subsection.6.4.2}{Decomposizioni in BNFC}{section.6.4}% 79
+\BOOKMARK [1][-]{section.6.5}{Regole di inferenza per le dipendenze funzionali}{chapter.6}% 80
+\BOOKMARK [2][-]{subsection.6.5.1}{Inferenza per le dipendenze funzionali}{section.6.5}% 81
+\BOOKMARK [2][-]{subsection.6.5.2}{Calcolo della BCNF}{section.6.5}% 82
+\BOOKMARK [0][-]{chapter.7}{Storage and indexing}{}% 83
+\BOOKMARK [1][-]{section.7.1}{Indexes}{chapter.7}% 84
+\BOOKMARK [2][-]{subsection.7.1.1}{B+ Tree Indexes}{section.7.1}% 85
+\BOOKMARK [2][-]{subsection.7.1.2}{Hash based indexes}{section.7.1}% 86
+\BOOKMARK [2][-]{subsection.7.1.3}{Alternative di data entry k* nell'indice}{section.7.1}% 87
+\BOOKMARK [1][-]{section.7.2}{Classificazione degli indici}{chapter.7}% 88
+\BOOKMARK [2][-]{subsection.7.2.1}{Clustered e unclustered}{section.7.2}% 89
+\BOOKMARK [1][-]{section.7.3}{Scelta degli indici}{chapter.7}% 90
+\BOOKMARK [2][-]{subsection.7.3.1}{Linee guida sulla selezione degli indici}{section.7.3}% 91
+\BOOKMARK [1][-]{section.7.4}{Indici con searh keys composte}{chapter.7}% 92
+\BOOKMARK [0][-]{chapter.8}{Teoria del costo}{}% 93
+\BOOKMARK [1][-]{section.8.1}{Definizioni}{chapter.8}% 94
+\BOOKMARK [2][-]{subsection.8.1.1}{Page}{section.8.1}% 95
+\BOOKMARK [2][-]{subsection.8.1.2}{Dimensione di un record}{section.8.1}% 96
+\BOOKMARK [2][-]{subsection.8.1.3}{Pages di una relazione}{section.8.1}% 97
+\BOOKMARK [2][-]{subsection.8.1.4}{Cardinalit\340 di una relazione}{section.8.1}% 98
+\BOOKMARK [2][-]{subsection.8.1.5}{Cardinalit\340 di un attributo}{section.8.1}% 99
+\BOOKMARK [2][-]{subsection.8.1.6}{Record per page}{section.8.1}% 100
+\BOOKMARK [2][-]{subsection.8.1.7}{Dimensioni di una relazione}{section.8.1}% 101
+\BOOKMARK [2][-]{subsection.8.1.8}{Costo}{section.8.1}% 102
+\BOOKMARK [1][-]{section.8.2}{Operazioni}{chapter.8}% 103
+\BOOKMARK [2][-]{subsection.8.2.1}{Scan}{section.8.2}% 104
+\BOOKMARK [2][-]{subsection.8.2.2}{Sorting}{section.8.2}% 105
+\BOOKMARK [2][-]{subsection.8.2.3}{Indici}{section.8.2}% 106
+\BOOKMARK [2][-]{subsection.8.2.4}{Indici composti}{section.8.2}% 107
+\BOOKMARK [2][-]{subsection.8.2.5}{Aggiornare indici}{section.8.2}% 108
+\BOOKMARK [2][-]{subsection.8.2.6}{Lookup di indici}{section.8.2}% 109
+\BOOKMARK [2][-]{subsection.8.2.7}{Il fattore di selettivit\340}{section.8.2}% 110
+\BOOKMARK [2][-]{subsection.8.2.8}{Clustered/Unclustered}{section.8.2}% 111
+\BOOKMARK [2][-]{subsection.8.2.9}{Costo di recupero dei qualifying records}{section.8.2}% 112
+\BOOKMARK [2][-]{subsection.8.2.10}{Costo di un operatore di update}{section.8.2}% 113
+\BOOKMARK [2][-]{subsection.8.2.11}{Join}{section.8.2}% 114
+\BOOKMARK [2][-]{subsection.8.2.12}{Salvare i risultati di una query}{section.8.2}% 115
+\BOOKMARK [2][-]{subsection.8.2.13}{Esecuzione e query plans}{section.8.2}% 116
+\BOOKMARK [2][-]{subsection.8.2.14}{Operatori on the fly}{section.8.2}% 117
+\BOOKMARK [2][-]{subsection.8.2.15}{Operatori index-only}{section.8.2}% 118
+\BOOKMARK [0][-]{chapter.9}{Transazioni}{}% 119
+\BOOKMARK [1][-]{section.9.1}{Testare la serializzabilit\340}{chapter.9}% 120
+\BOOKMARK [2][-]{subsection.9.1.1}{Testing}{section.9.1}% 121
+\BOOKMARK [2][-]{subsection.9.1.2}{Serializzabilit\340 del conflitto}{section.9.1}% 122
+\BOOKMARK [2][-]{subsection.9.1.3}{Testare conflict-serializability}{section.9.1}% 123
+\BOOKMARK [1][-]{section.9.2}{Aspetti pratici}{chapter.9}% 124
+\BOOKMARK [1][-]{section.9.3}{Locks}{chapter.9}% 125
+\BOOKMARK [2][-]{subsection.9.3.1}{Oggetti}{section.9.3}% 126
+\BOOKMARK [2][-]{subsection.9.3.2}{Locking scheduler}{section.9.3}% 127
